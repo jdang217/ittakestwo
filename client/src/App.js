@@ -7,11 +7,10 @@ import "./App.css"
 
 import Navbar from './components/Navbar';
 import Home from './pages';
+import Games from './pages/games';
+import Lobbies from './pages/lobbies';
+import Leaderboards from './pages/leaderboards';
 import About from './pages/about';
-import Events from './pages/events';
-import AnnualReport from './pages/annual';
-import Teams from './pages/team';
-import Blogs from './pages/blogs';
 import SignUp from './pages/signup';
 import SignIn from './pages/signin';
 
@@ -44,22 +43,14 @@ class App extends React.Component {
           <Navbar />
           <Routes>
             <Route exact path='/' element={<Home />} />
+            <Route exact path='/games' element={<Games/>} />
+            <Route exact path='/lobbies' element={<Lobbies/>} />
+            <Route exact path='/leaderboards' element={<Leaderboards/>} />
             <Route exact path='/about' element={<About />} />
-            <Route exact path='/events' element={<Events/>} />
-            <Route exact path='/annual' element={<AnnualReport/>} />
-            <Route exact path='/team' element={<Teams/>} />
-            <Route exact path='/blogs' element={<Blogs/>} />
             <Route exact path='/sign-up' element={<SignUp/>} />
             <Route exact path='/sign-in' element={<SignIn/>} />
           </Routes>
         </Router>
-        <ul>
-          {
-            Object.keys(this.state.bestShows).map((cur, idx) => (
-              <li>{cur} - {this.state.bestShows[cur]} </li>
-            ))
-          }
-        </ul>
       </div>
     );
   }

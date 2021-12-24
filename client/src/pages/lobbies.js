@@ -1,7 +1,7 @@
 import React from 'react';
 
-const AnnualReport = () => {
-return (
+const Lobbies = () => {
+    return (
         <div
             style={{
                 display: 'flex',
@@ -10,9 +10,9 @@ return (
                 height: '100vh'
             }}
         >
-            <h1>Annual Report</h1>
+            <h1>Open Lobbies</h1>
         </div>
     );
 };
 
-export default AnnualReport;
+export default Lobbies;
