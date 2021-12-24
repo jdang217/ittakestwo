@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@azure/identity": "^2.0.1",
+    "@azure/keyvault-secrets": "^4.3.0",
     "cookie-parser": "^1.4.6",
     "express": "^4.17.2",
     "http-errors": "^1.8.1",
