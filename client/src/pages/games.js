@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Blogs = () => {
+const Games = () => {
 return (
         <div
             style={{
@@ -10,9 +10,9 @@ return (
                 height: '100vh'
             }}
         >
-            <h1>Welcome to GeeksforGeeks Blogs</h1>
+            <h1>Games</h1>
         </div>
     );
 };
 
-export default Blogs;
+export default Games;

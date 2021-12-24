@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Events = () => {
+const Leaderboards = () => {
     return (
         <div
             style={{
@@ -10,9 +10,9 @@ const Events = () => {
                 height: '100vh'
             }}
         >
-            <h1>Welcome to GeeksforGeeks Events</h1>
+            <h1>Competive Game Leaderboards</h1>
         </div>
     );
 };
 
-export default Events;
+export default Leaderboards;
