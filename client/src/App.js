@@ -53,6 +53,13 @@ class App extends React.Component {
             <Route exact path='/sign-in' element={<SignIn/>} />
           </Routes>
         </Router>
+        <ul>
+          {
+            Object.keys(this.state.bestShows).map((cur, idx) => (
+              <li>{cur} - {this.state.bestShows[cur]} </li>
+            ))
+          }
+        </ul>
       </div>
     );
   }
