@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const bodyParser = require('body-parser');
 
 var app = express();
 
@@ -19,11 +20,13 @@ app.use(cookieParser());
 
 app.use(express.static('./client/build'));
 
-app.use('/api/data', require('./routes/new-index.js'))
+//app.use('/api/data', require('./routes/new-index.js'));
 
 app.get("*", (req, res) => { //our GET route needs to point to the index.html in our build
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
+});
+
+app.post('/api/signup', require('./routes/signup.js'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
