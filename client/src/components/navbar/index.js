@@ -9,10 +9,16 @@ import {
 } from './NavbarElements';
 
 const Navbar = () => {
+
+	const handleSubmit = (event) => { 
+		alert("bars clicked");
+		var x = document.getElementsByClassName
+	}
+
 	return (
 		<>
 			<Nav>
-				<Bars />
+				<Bars onClick={handleSubmit}/>
 
 				<NavMenu>
 					<NavLink to='/' activeStyle>
