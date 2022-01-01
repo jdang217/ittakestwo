@@ -5,7 +5,6 @@ var router = express.Router();
 var MongoClient = require('mongodb').MongoClient;
 var url = "***REMOVED***t/myFirstDatabase?retryWrites=true&w=majority";
 
-
 router.get('/', (req, res, next) => {
 	MongoClient.connect(url, { useUnifiedTopology: true } ,function(err, db) {
 		if (err) throw err;
@@ -14,7 +13,7 @@ router.get('/', (req, res, next) => {
 			if (err) throw err;
 			console.log('Mongo data coming in hot')
     		console.log(result);
-    		res.json(result)
+    		res.json(result);
     		db.close();
     	});
 	}); 
