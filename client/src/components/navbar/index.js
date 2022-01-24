@@ -8,7 +8,7 @@ import {
 	NavBtnLink,
 } from './NavbarElements';
 
-const Navbar = () => {
+const Navbar = (props) => {
 
 	const handleSubmit = (event) => { 
 		alert("bars clicked");
@@ -33,21 +33,25 @@ const Navbar = () => {
 					<NavLink to='/leaderboards' activeStyle>
 						Leaderboards
 					</NavLink>
+					<NavLink to='/devblog' activeStyle>
+						Devblog
+					</NavLink>
 					<NavLink to='/about' activeStyle>
 						About
 					</NavLink>
-					<NavLink to='/sign-up' activeStyle>
+					{!props.isLoggedIn &&
+					(<NavLink to='/sign-up' activeStyle>
 						Sign Up
-					</NavLink>
-					{/* Second Nav */}
-					{/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
+					</NavLink>)}
 				</NavMenu>
+
 				<NavBtn>
-					<NavBtnLink to='/sign-in'>Sign In</NavBtnLink>
+					{props.isLoggedIn && (<NavBtnLink to='/sign-out'>Log Out</NavBtnLink>)}
+  					{!props.isLoggedIn && (<NavBtnLink to='/sign-in'>Log In</NavBtnLink>)}
 				</NavBtn>
 			</Nav>
 		</>
 	);
 };
-
+//<NavBtnLink to='/sign-in'>Sign In</NavBtnLink>
 export default Navbar;

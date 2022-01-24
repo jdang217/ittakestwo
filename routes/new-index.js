@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 
 var MongoClient = require('mongodb').MongoClient;
-var url = "***REMOVED***t/myFirstDatabase?retryWrites=true&w=majority";
+var url = process.env.MONGODB_URL;
 
 router.get('/', (req, res, next) => {
 	MongoClient.connect(url, { useUnifiedTopology: true } ,function(err, db) {
