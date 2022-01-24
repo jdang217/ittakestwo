@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'ItTakesTwo'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_454AE27ADCB945F8A039D5770B952496 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_120B39CEDCAF477E9248213D2509C350 }}
           package: .
