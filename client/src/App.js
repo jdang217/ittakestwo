@@ -15,7 +15,6 @@ import SignUp from './pages/signup';
 import SignIn from './pages/signin';
 import SignOut from "./pages/signout";
 import axios from "axios";
-import { token } from "morgan";
 
 
 class App extends React.Component {

@@ -12,7 +12,7 @@ const Navbar = (props) => {
 
 	const handleSubmit = (event) => { 
 		alert("bars clicked");
-		var x = document.getElementsByClassName
+		//var x = document.getElementsByClassName
 	}
 
 	return (
