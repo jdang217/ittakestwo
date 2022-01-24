@@ -14,10 +14,6 @@
     height: '100vh';
 }
 
-.prompt {
-    position: absolute;
-}
-
 .errors {
     font-size: 14px;
     color: red;

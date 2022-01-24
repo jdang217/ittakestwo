@@ -2,9 +2,8 @@
 var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
-
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb+srv://jdang217:Awesomej217@ittakestwocluster.ltrhf.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const jwt = require("jsonwebtoken")
+const User = require("../models/user");
 
 router.post('/api/signup', (req, res, next) => {
 
@@ -13,40 +12,56 @@ router.post('/api/signup', (req, res, next) => {
 		var form = new multiparty.Form();
 		form.parse(req, function(err, fields, files) {
 			if (err) throw err;
-			MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
-				if (err) throw err;
-				var dbo = db.db("db");
-				dbo.collection("users").findOne({username:fields.username}, function(err, result) {
-					if (err) throw err;
-					console.log("User duplicate checked");
-					if (result != null) {
-						return res.status(403).send('Username Duplicate');
-					}
-					res.json(result);
-					db.close();
-				})
-			});
+			var user = JSON.stringify(fields.username);
+			//remove quotes and brackets
+			user = user.replace(/['"[\[\]]+/g, '');
+			
+			User.findOne({username: user}, function (err, docs) {
+				if (err) {
+					console.log(err);
+				}
+				else if (docs) {
+					//document found
+					return res.status(403).send('Username Duplicate');
+				}
+				else {
+					//no document found
+					return res.status(200).send('Success');
+				}
+			})
 		})
-	}
-	else if (reqType == 'password') {
-
 	}
 	else {
 		var form = new multiparty.Form();
 		form.parse(req, function(err, fields, files) {
 			if (err) throw err;
 			console.log(fields.username + " " + fields.password);
-			MongoClient.connect(url, { useUnifiedTopology: true }, function(err, db) {
-				if (err) throw err;
-				var dbo = db.db("db");
-				var newUser = { username: fields.username, password: fields.password };
-				dbo.collection("users").insertOne(newUser, function(err, result) {
-					if (err) throw err;
-					console.log("New User Inserted");
-					res.json(result);
-					db.close();
-				});
-			});
+			var user = fields.username.toString();
+			var pass = fields.password.toString();
+			console.log(user);
+			console.log(pass);
+			
+			User.findOne({username: user}, function (err, docs) {
+				if (err) {
+					console.log(err);
+				}
+				else if (docs) {
+					//document found
+					return res.status(403).send('Username Duplicate');
+				}
+				else {
+					//no document found
+					return res.status(200).send('Success');
+				}
+			})
+
+			const newUser = new User({
+				username: user,
+				password: pass
+			})
+			
+			newUser.save()
+			console.log("New User Inserted");
 		})
 	}
 });

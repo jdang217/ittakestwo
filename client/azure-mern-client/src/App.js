@@ -55,7 +55,6 @@ class App extends React.Component {
       componentDidMount() { //prod
           axios.get('/api/data')
               .then(res => {
-                  console.log("data recieved: ", res.data[0]);
                   this.setState({ bestShows: res.data[0] });
               })
               .catch(alert);
