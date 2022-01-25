@@ -7,9 +7,6 @@ import './signin.css';
 
 const SignIn = (props) => {
 
-    console.log("signin props")
-    console.log(props);
-
     var sanitize = require('mongo-sanitize');
 
     var token = "";
@@ -48,14 +45,12 @@ const SignIn = (props) => {
         .then(function (response) {
             //handle success
             token = response.data.token;
-            console.log(token);
             localStorage.setItem("token", token);
             props.login();
             navigate('/');
         })
         .catch(function (response) {
             //handle error
-            console.log(response);
             setTimeout(function() {setLoginError('Invalid username or password'); }, 500);
         });
     }

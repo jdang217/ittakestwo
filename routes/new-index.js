@@ -11,7 +11,6 @@ router.get('/', (req, res, next) => {
 		var dbo = db.db("db");
 		dbo.collection("collection1").find({}).toArray(function(err, result) {
 			if (err) throw err;
-			console.log('Mongo data coming in hot')
     		console.log(result);
     		res.json(result);
     		db.close();

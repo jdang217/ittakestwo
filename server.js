@@ -14,12 +14,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 5000);
 
-mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser:true, useUnifiedTopology:true })
-.then((res) => {
-    app.listen(process.env.PORT, () => console.log("Server is live"))
-})
-.catch(err => console.log(err))
-
 //console.log("+++++++++++++++" + app.get('port'));
 
 app.use(logger('dev'));
@@ -57,6 +51,10 @@ app.use(function (err, req, res, next) {
 
 module.exports = app;
 
-app.listen(app.get('port'), function () {
-    console.log('Express server listening on port ' + app.get('port'));
-});
+mongoose.connect(process.env.MONGODB_URL, { useNewUrlParser:true, useUnifiedTopology:true })
+.then((res) => {
+    app.listen(app.get('port'), function () {
+        console.log('Express server listening on port ' + app.get('port'));
+    });
+})
+.catch(err => console.log(err))

@@ -35,11 +35,8 @@ router.post('/api/signup', (req, res, next) => {
 		var form = new multiparty.Form();
 		form.parse(req, function(err, fields, files) {
 			if (err) throw err;
-			console.log(fields.username + " " + fields.password);
 			var user = fields.username.toString();
 			var pass = fields.password.toString();
-			console.log(user);
-			console.log(pass);
 			
 			User.findOne({username: user}, function (err, docs) {
 				if (err) {
@@ -61,7 +58,6 @@ router.post('/api/signup', (req, res, next) => {
 			})
 			
 			newUser.save()
-			console.log("New User Inserted");
 		})
 	}
 });

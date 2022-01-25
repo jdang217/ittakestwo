@@ -12,7 +12,6 @@ const auth = require('../middleware/auth');
 
 router.post('/api/signin', (req, res, next) => {
 
-	console.log("in post")
 	var form = new multiparty.Form();
 	form.parse(req, function(err, fields, files) {
 		if (err) throw err;
@@ -60,7 +59,6 @@ router.post('/api/signin', (req, res, next) => {
 });
 
 router.get('/api/signin', auth, (req, res, next) => {
-	console.log("here")
 	User.findById(req.user.id)
 		.select('-password')
 		.then(user => res.json(user));

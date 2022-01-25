@@ -149,7 +149,6 @@ const SignUp = () => {
                     })
                     .then(function (response) {
                         //handle success
-                        console.log(response);
                         navigate('/');
                     })
                     .catch(function (response) {

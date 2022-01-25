@@ -41,25 +41,14 @@ class App extends React.Component {
       bestShows: []
     };
   }
-/*
-  componentDidMount() { //dev
-    axios.get('http://localhost:5000/api/data')
-      .then(res => {
-        console.log("data recieved: ", res.data[0]);
-        this.setState({ bestShows: res.data[0] });
-      })
-      .catch(alert);
+  
+  componentDidMount() { //prod
+      axios.get('/api/data')
+          .then(res => {
+              this.setState({ bestShows: res.data[0] });
+          })
+          .catch(alert);
   }
-*/
-  
-      componentDidMount() { //prod
-          axios.get('/api/data')
-              .then(res => {
-                  this.setState({ bestShows: res.data[0] });
-              })
-              .catch(alert);
-      }
-  
 
   render() {
     return (

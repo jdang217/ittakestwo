@@ -35,7 +35,6 @@ class App extends React.Component {
     })
     .then((response) => {
       //handle success
-      console.log(response);
       this.setState({ isAuth: true });
     })
     .catch((response) => {
@@ -48,9 +47,9 @@ class App extends React.Component {
     this.setState({ isAuth: false });
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     console.log("componentDidMount success")
-  }
+  }*/
 
   render() {
     const { isAuth } = this.state;
