@@ -1,0 +1,78 @@
+.window {
+    overflow: auto;
+}
+
+.title {
+    display: 'flex';
+    justify-content: 'center';
+    align-items: 'center';
+    height: '100vh';
+}
+
+.form {
+    white-space: pre-wrap;
+    display: 'flex';
+    text-align: center;
+    justify-content: 'left';
+    align-items: 'center';
+}
+
+.submittext {
+    position: absolute;
+    resize: none;
+    left: 5vw;
+    top: 160px;
+    height: 125px;
+    width: 90vw;
+}
+
+.submit {
+    position: absolute;
+    resize: none;
+    left: 85vw;
+    top: 295px;
+    height: 30px;
+    width: 10vw;
+}
+
+.post {
+    position: relative;
+    white-space: pre-wrap;
+    display: 'flex';
+    text-align: center;
+    justify-content: 'center';
+    align-items: 'center';
+}
+
+.postbox {
+    margin-top: 40px;
+    position: relative;
+    white-space: pre-wrap;
+    display: 'flex';
+    /*text-align: left;*/
+    justify-content: 'center';
+    align-items: 'center';
+    border-radius: 25px;
+    border: 2px solid #63D471;
+    left: 5vw;
+    /*height: 125px;*/
+    min-height: 125px;
+    width: 90vw;
+    overflow: auto;
+}
+
+.posttitle {
+    text-align: left;
+    display: flex;
+    justify-content: space-between;
+    text-indent: 2vw;
+    max-width: 88vw;
+}
+
+.posttext {
+    text-align: left;
+    padding-left: 2vw;
+    /*text-indent: 2vw;*/
+    max-width: 88vw;
+    overflow-wrap: break-word;
+}

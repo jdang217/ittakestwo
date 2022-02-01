@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 const jwt = require("jsonwebtoken")
-const User = require("../models/user");
+const User = require("../../models/user.js")
 
 router.post('/api/signup', (req, res, next) => {
 
@@ -48,16 +48,15 @@ router.post('/api/signup', (req, res, next) => {
 				}
 				else {
 					//no document found
+					const newUser = new User({
+						username: user,
+						password: pass
+					})
+					
+					newUser.save()
 					return res.status(200).send('Success');
 				}
 			})
-
-			const newUser = new User({
-				username: user,
-				password: pass
-			})
-			
-			newUser.save()
 		})
 	}
 });

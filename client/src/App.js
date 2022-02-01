@@ -47,9 +47,9 @@ class App extends React.Component {
     this.setState({ isAuth: false });
   }
 
-  /*componentDidMount() {
-    console.log("componentDidMount success")
-  }*/
+  componentDidMount () {
+    this.login();
+  }
 
   render() {
     const { isAuth } = this.state;
@@ -63,7 +63,7 @@ class App extends React.Component {
             <Route exact path='/games' element={<Games/>} />
             <Route exact path='/lobbies' element={<Lobbies/>} />
             <Route exact path='/leaderboards' element={<Leaderboards/>} />
-            <Route exact path='/devblog' element={<Devblog />} />
+            <Route exact path='/devblog' element={<Devblog isLoggedIn={isAuth}/>} />
             <Route exact path='/about' element={<About />} />
             <Route exact path='/sign-up' element={<SignUp/>} />
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />

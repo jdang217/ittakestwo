@@ -3,10 +3,9 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-const auth = require('./middleware/auth');
+//const auth = require('./middleware/auth');
 
 var app = express();
 
@@ -14,7 +13,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('port', process.env.PORT || 5000);
 
-//console.log("+++++++++++++++" + app.get('port'));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -23,12 +21,12 @@ app.use(cookieParser());
 
 app.use(express.static('./client/build'));
 
-//app.use('/api/data', require('./routes/new-index.js'));
+//user authentication
+app.post('/api/signup', require('./routes/userAuth/signup.js'));
+app.all('/api/signin', require('./routes/userAuth/signin.js'));
 
-app.post('/api/signup', require('./routes/signup.js'));
-
-app.all('/api/signin', require('./routes/signin.js'));
-//app.get('/api/signin', require('./routes/auth.js'));
+//devblog
+app.all('/api/devblog', require('./routes/devblog/devblog.js'))
 
 app.get("*", (req, res) => { //our GET route needs to point to the index.html in our build
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));

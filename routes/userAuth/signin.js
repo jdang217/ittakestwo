@@ -3,12 +3,12 @@ var express = require('express');
 var router = express.Router();
 var multiparty = require('multiparty');
 const jwt = require("jsonwebtoken")
-const User = require("../models/user");
+const User = require("../../models/user.js");
 const bcrypt = require("bcryptjs");
 
 const oneDay = 86400;
 
-const auth = require('../middleware/auth');
+const auth = require('../../middleware/auth.js');
 
 router.post('/api/signin', (req, res, next) => {
 
@@ -48,7 +48,8 @@ router.post('/api/signin', (req, res, next) => {
 						//invalid password
 						return res.status(403).send('Invalid username or password');
 					}
-				});
+				})
+				.catch(err => console.log(err))
 			}
 			else {
 				//no document found
@@ -59,9 +60,14 @@ router.post('/api/signin', (req, res, next) => {
 });
 
 router.get('/api/signin', auth, (req, res, next) => {
-	User.findById(req.user.id)
-		.select('-password')
-		.then(user => res.json(user));
+	if (res.statusCode == 400 || res.statusCode == 401) {
+		next()
+	}
+	else {
+		User.findById(req.user.id)
+			.select('-password')
+			.then(user => res.json(user));
+	}
 });
 
 module.exports = router;

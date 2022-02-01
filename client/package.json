@@ -39,5 +39,10 @@
   "devDependencies": {
     "@popperjs/core": "^2.11.2",
     "typescript": "^4.5.5"
+  },
+  "browser": {
+    "zlib_bindings": "false",
+    "zlib": "false",
+    "crypto": "false"
   }
 }

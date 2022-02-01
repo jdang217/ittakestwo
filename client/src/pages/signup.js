@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { ImSpinner2 } from 'react-icons/im';
 
-import './signup.css';
+import './css/signup.css';
 
 const SignUp = () => {
     var sanitize = require('mongo-sanitize');
