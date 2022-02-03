@@ -7,6 +7,10 @@
     height: '100vh';
 }
 
+.label {
+  text-align: left;
+}
+
 .title {
     display: 'flex';
     justify-content: 'center';

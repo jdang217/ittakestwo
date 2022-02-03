@@ -5,14 +5,24 @@ import { useState } from "react";
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 import { ImSpinner2 } from 'react-icons/im';
 
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import Visibility from "@material-ui/icons/Visibility";
+import InputAdornment from "@mui/material/InputAdornment";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Input from "@mui/material/Input";
+
 import './css/signup.css';
 
 const SignUp = () => {
     var sanitize = require('mongo-sanitize');
+    const navigate = useNavigate();
+
+    //controls password hiding
+    const [showPass, setShowPass] = useState(false);
+
     //username and password inputs
     const [inputs, setInputs] = useState({});
-
-    const navigate = useNavigate();
 
     //username error message
     const [userError, setUserError] = useState('');
@@ -37,17 +47,17 @@ const SignUp = () => {
         if (!cleanUser || cleanUser === 0) {
             setUserErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='1'/>);
             setTimeout(function() {setUserErrorIcon(<FaTimesCircle color='red' size='20px' err='1'/>); }, 500);
-            setTimeout(function() {setUserError('Username cannot be empty     '); }, 500);
+            setTimeout(function() {setUserError('Username cannot be empty'); }, 500);
         }
         else if (!cleanUser.match(letterNumber)) {
             setUserErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='1'/>);
             setTimeout(function() {setUserErrorIcon(<FaTimesCircle color='red' size='20px' err='1'/>); }, 500);
-            setTimeout(function() {setUserError('         Characters must be Aa-Zz, 0-9, or _'); }, 500);
+            setTimeout(function() {setUserError('Characters must be Aa-Zz, 0-9, or _'); }, 500);
         }
         else if (cleanUser.length > 20) {
             setUserErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='1'/>);
             setTimeout(function() {setUserErrorIcon(<FaTimesCircle color='red' size='20px' err='1'/>); }, 500);
-            setTimeout(function() {setUserError('           Username must be 20 characters or less'); }, 500);
+            setTimeout(function() {setUserError('Username must be 20 characters or less'); }, 500);
         }
         else {
 
@@ -94,13 +104,13 @@ const SignUp = () => {
         if (!cleanPass || cleanPass === 0) {
             setPassErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='1'/>);
             setTimeout(function() {setPassErrorIcon(<FaTimesCircle color='red' size='20px' err='1'/>); }, 500);
-            setTimeout(function() {setPassError('Password cannot be empty      '); }, 500);
+            setTimeout(function() {setPassError('Password cannot be empty'); }, 500);
             return false;
         }
         else if (cleanPass.length < 8) {
             setPassErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='1'/>);
             setTimeout(function() {setPassErrorIcon(<FaTimesCircle color='red' size='20px' err='1'/>); }, 500);
-            setTimeout(function() {setPassError('                   Password must have 8 or more characters'); }, 500);
+            setTimeout(function() {setPassError('Password must have 8 or more characters'); }, 500);
             return false;
         }
         setPassErrorIcon(<ImSpinner2 icon="spinner" className="spinner" size='20px' err='0'/>);
@@ -161,6 +171,10 @@ const SignUp = () => {
         })  
     }
 
+    const handleClickShowPassword = (event) => {
+        setShowPass(!showPass)
+    }
+
     return (
         <div>
             <h1 className='title'>Sign Up</h1>
@@ -168,35 +182,76 @@ const SignUp = () => {
             <br/>
             <div className='form'>
                 <form onSubmit={handleSubmit}>
-                    <label >Username:{'                      '} 
-                    <br/> {'      '}  
-                    <input 
-                        type="text" 
-                        name="username" 
-                        value={inputs.username || ""} 
-                        onChange={handleChange}
-                        onBlur={handleUsername}
-                        pattern="[a-zA-Z0-9-]+"
-                    />
-                    </label> 
-                    <label className='icon'> {userErrorIcon}</label>
-                    <br/>
-                    <label className='errors'> {userError}</label>
-                    <br/><br/>
-                    <label>Password:{'                       '} 
-                    <br/> {'      '}
-                        <input 
-                        type="text" 
-                        name="password" 
-                        value={inputs.password || ""} 
-                        onChange={handleChange}
-                        onBlur={handlePassword}
-                    />
-                    </label>
-                    <label className='icon'> {passErrorIcon}</label>
-                    <br/>
-                    <label className='errors'> {passError}</label>
-                    <br/><br/>
+                    <div style={{"margin-left": "35vw"}}>
+                        <InputLabel className='label' htmlFor="standard-adornment-username">
+                            Username
+                        </InputLabel>
+                        <Input 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                            }}
+                            type="text" 
+                            name="username" 
+                            value={inputs.username || ""} 
+                            onChange={handleChange}
+                            onBlur={handleUsername}
+                            pattern="[a-zA-Z0-9-]+"
+                        />
+                        <label className='icon'> {userErrorIcon}</label>
+                        <br/>
+                        <InputLabel 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                                'font-size': '15px',
+                                color: 'red',
+                                top: '-15px'
+                            }}
+                            className='errors'>
+
+                            {userError}
+                        </InputLabel>
+                        <br/><br/>
+                        <InputLabel className='label' htmlFor="standard-adornment-password">
+                            Password
+                        </InputLabel>
+                        <Input 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                            }}
+                            type={showPass ? "text" : "password"} 
+                            name="password" 
+                            value={inputs.password || ""} 
+                            onChange={handleChange}
+                            onBlur={handlePassword}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    onClick={handleClickShowPassword}
+                                    >
+                                    {showPass ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                        <label className='icon'> {passErrorIcon}</label>
+                        <br/>
+                        <InputLabel 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                                'font-size': '15px',
+                                color: 'red',
+                                top: '-15px'
+                            }}
+                            className='errors'>
+
+                            {passError}
+                        </InputLabel>
+                        <br/><br/>
+                    </div>
                     <input type="submit" value="Sign Up!" />
                 </form>
             </div>

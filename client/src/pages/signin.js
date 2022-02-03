@@ -3,6 +3,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react";
 
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import Visibility from "@material-ui/icons/Visibility";
+import InputAdornment from "@mui/material/InputAdornment";
+import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import Input from "@mui/material/Input";
+
 import './css/signin.css';
 
 const SignIn = (props) => {
@@ -16,6 +23,13 @@ const SignIn = (props) => {
     const [inputs, setInputs] = useState({});
 
     const [loginError, setLoginError] = useState('');
+
+    //controls password hiding
+    const [showPass, setShowPass] = useState(false);
+
+    const handleClickShowPassword = (event) => {
+        setShowPass(!showPass)
+    }
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -61,31 +75,52 @@ const SignIn = (props) => {
             <br/>
             <br/>
             <div className='form'>
-                <label className='errors'> {loginError}  </label>
-                <form onSubmit={handleSubmit}>
-                    <label >Username:{'                             '} 
-                    <br/> 
-                    <input 
-                        type="text" 
-                        name="username" 
-                        value={inputs.username || ""} 
-                        onChange={handleChange}
-                        pattern="[a-zA-Z0-9-]+"
-                    />
-                    </label> 
-                    <br/><br/>
-                    <label>Password:{'                              '} 
-                    <br/>
-                        <input 
-                        type="text" 
-                        name="password" 
-                        value={inputs.password || ""} 
-                        onChange={handleChange}
-                    />
-                    </label>
-                    <br/><br/>
-                    <input type="submit" value="Sign In!" />
-                </form>
+                <div style={{"margin-left": "35vw"}}>
+                    <InputLabel className='errors'>
+                        {loginError}
+                    </InputLabel>
+                    <form onSubmit={handleSubmit}>
+                        <InputLabel className='label' htmlFor="standard-adornment-username">
+                            Username
+                        </InputLabel>
+                        <Input 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                            }}
+                            type="text" 
+                            name="username" 
+                            value={inputs.username || ""} 
+                            onChange={handleChange}
+                            pattern="[a-zA-Z0-9-]+"
+                        />
+                        <br/><br/>
+                        <InputLabel className='label' htmlFor="standard-adornment-password">
+                            Password
+                        </InputLabel>
+                        <Input 
+                            sx={{
+                                width: '30vw',
+                                display: 'flex',
+                            }}
+                            type={showPass ? "text" : "password"} 
+                            name="password" 
+                            value={inputs.password || ""} 
+                            onChange={handleChange}
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                    onClick={handleClickShowPassword}
+                                    >
+                                    {showPass ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </InputAdornment>
+                            }
+                        />
+                        <br/><br/>
+                    </form>
+                </div>
+                <input type="submit" value="Sign In!" />
             </div>
         </div>
     );

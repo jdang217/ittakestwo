@@ -111,9 +111,11 @@ const Devblog = (props) => {
                     <div>
                         {[...posts].map(
                             (item) => (
-                                <Post username={item.username} message={item.message} date={item.createdAt}/>
+                                <Post username={item.username} message={item.message.replace(/\\r\\n/g,"\r\n")} 
+                                date={moment(item.createdAt, 'YYYY-MM-DDTHH:mm:ss.SSS[Z]').format("MMM Do, YYYY")}/>
                             )
                         )}
+                        <br/>
                     </div> 
                 )}
                 {(props.isLoggedIn && canPost) && (
