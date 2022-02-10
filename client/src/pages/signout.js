@@ -4,7 +4,7 @@ const SignOut = (props) => {
 
     const navigate = useNavigate();
 
-    localStorage.removeItem("token");
+    localStorage.clear()
     props.logout();
     navigate('/');
 

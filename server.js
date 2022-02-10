@@ -28,6 +28,9 @@ app.all('/api/signin', require('./routes/userAuth/signin.js'));
 //devblog
 app.all('/api/devblog', require('./routes/devblog/devblog.js'))
 
+//profile
+app.all('/api/profile/:user', require('./routes/userProfile/profile'))
+
 app.get("*", (req, res) => { //our GET route needs to point to the index.html in our build
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
 });

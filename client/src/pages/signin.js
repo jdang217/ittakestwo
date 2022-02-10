@@ -58,6 +58,7 @@ const SignIn = (props) => {
         })
         .then(function (response) {
             //handle success
+            console.log(response.data)
             token = response.data.token;
             localStorage.setItem("token", token);
             props.login();
@@ -73,13 +74,18 @@ const SignIn = (props) => {
         <div>
             <h1 className='title'>Sign In</h1>
             <br/>
-            <br/>
             <div className='form'>
-                <div style={{"margin-left": "35vw"}}>
-                    <InputLabel className='errors'>
-                        {loginError}
-                    </InputLabel>
-                    <form onSubmit={handleSubmit}>
+                <InputLabel style={{"margin-left": "35vw"}} className='errors'
+                sx={{
+                    'font-size': '15px',
+                    color: 'red',
+                }}
+                >
+                    {loginError}
+                </InputLabel>
+                <br/>
+                <form onSubmit={handleSubmit}>
+                    <div style={{"margin-left": "35vw"}}>
                         <InputLabel className='label' htmlFor="standard-adornment-username">
                             Username
                         </InputLabel>
@@ -118,9 +124,9 @@ const SignIn = (props) => {
                             }
                         />
                         <br/><br/>
-                    </form>
-                </div>
-                <input type="submit" value="Sign In!" />
+                    </div>
+                    <input type="submit" value="Sign In!" />
+                </form>
             </div>
         </div>
     );

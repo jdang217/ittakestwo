@@ -212,7 +212,7 @@ const SignUp = () => {
 
                             {userError}
                         </InputLabel>
-                        <br/><br/>
+                        <br/>
                         <InputLabel className='label' htmlFor="standard-adornment-password">
                             Password
                         </InputLabel>
@@ -250,7 +250,7 @@ const SignUp = () => {
 
                             {passError}
                         </InputLabel>
-                        <br/><br/>
+                        <br/>
                     </div>
                     <input type="submit" value="Sign Up!" />
                 </form>

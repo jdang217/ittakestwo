@@ -6,7 +6,10 @@ import {
 	NavMenu,
 	NavBtn,
 	NavBtnLink,
+	AccBtn,
 } from './NavbarElements';
+
+import AccountMenu from './accountDrop'
 
 const Navbar = (props) => {
 
@@ -44,14 +47,19 @@ const Navbar = (props) => {
 						Sign Up
 					</NavLink>)}
 				</NavMenu>
+					
+				{props.isLoggedIn && (
+				<AccBtn>
+					<AccountMenu user={props.user}/>
+				</AccBtn>)}
 
+				{!props.isLoggedIn && (
 				<NavBtn>
-					{props.isLoggedIn && (<NavBtnLink to='/sign-out'>Log Out</NavBtnLink>)}
-  					{!props.isLoggedIn && (<NavBtnLink to='/sign-in'>Log In</NavBtnLink>)}
-				</NavBtn>
+  					<NavBtnLink to='/sign-in'>Log In</NavBtnLink>
+				</NavBtn>)}
 			</Nav>
 		</>
 	);
 };
-//<NavBtnLink to='/sign-in'>Sign In</NavBtnLink>
+//{props.isLoggedIn && (<NavBtnLink to='/sign-out'>Log Out</NavBtnLink>)}
 export default Navbar;

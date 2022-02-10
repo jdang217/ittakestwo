@@ -13,14 +13,15 @@ import Devblog from './pages/devblog';
 import About from './pages/about';
 import SignUp from './pages/signup';
 import SignIn from './pages/signin';
-import SignOut from "./pages/signout";
+import SignOut from './pages/signout';
+import Profile from './pages/profile';
 import axios from "axios";
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { isAuth: false };
+    this.state = { isAuth: false, user: "" };
   }
 
   login = () => {
@@ -35,7 +36,7 @@ class App extends React.Component {
     })
     .then((response) => {
       //handle success
-      this.setState({ isAuth: true });
+      this.setState({ isAuth: true, user: response.data.username });
     })
     .catch((response) => {
       //handle error
@@ -52,12 +53,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { isAuth } = this.state;
+    const { isAuth, user } = this.state;
     return (
       
       <div>
         <Router>
-          <Navbar isLoggedIn={isAuth} logout={this.logout} login={this.login}/>
+          <Navbar isLoggedIn={isAuth} user={user} logout={this.logout} login={this.login}/>
           <Routes>
             <Route exact path='/' element={<Home />} />
             <Route exact path='/games' element={<Games/>} />
@@ -68,6 +69,7 @@ class App extends React.Component {
             <Route exact path='/sign-up' element={<SignUp/>} />
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />
             <Route exact path='/sign-out' element={<SignOut isLoggedIn={isAuth} logout={this.logout}/>} />
+            <Route exact path='/profile/:user' element={<Profile/>} />
           </Routes>
         </Router>
       </div>

@@ -36,8 +36,8 @@ export const Bars = styled(FaBars)`
         display: block;
         position: absolute;
         top: 0;
-        right: 0;
-        transform: translate(-100%, 75%);
+        left: 0;
+        transform: scale(1.1) translate(100%, 85%);
         font-size: 1.8rem;
         cursor: pointer;
     }
@@ -69,6 +69,22 @@ export const NavBtn = styled.nav`
     }
 `;
 
+export const AccBtn = styled.nav`
+    display: flex;
+    align-items: center;
+    margin-right: 24px;
+    /* Third Nav */
+    /*justify-content: flex-end;
+    width: 100vw; */
+    @media screen and (max-width: 768px) {
+        display: block
+        position: absolute
+        top: 0
+        right: 0
+        transform: translate(-100%, 75%);
+    }
+`;
+
 export const NavBtnLink = styled(Link)`
     border-radius: 4px;
     background: #808080;
@@ -87,3 +103,4 @@ export const NavBtnLink = styled(Link)`
         color: #808080;
     }
 `;
+
