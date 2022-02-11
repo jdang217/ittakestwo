@@ -9,7 +9,10 @@ const FaceChat = () => {
     const [callDisable, setCallDisable] = useState(true);
     const [answerDisable, setAnswerDisable] = useState(true);
     const [hangDisable, setHangDisable] = useState(true);
+    const [answerIdDisable, setAnswerIdDisable] = useState(true);
+    const [answerInputId, setAnswerInputId] = useState('');
     const [callInputId, setCallInputId] = useState('');
+
 
     const firebaseConfig = {
         apiKey: "AIzaSyCHcdPg44U4oWfG-BsYKv0YcF8vzX4kF1M",
@@ -29,7 +32,6 @@ const FaceChat = () => {
 
     
     const [pc, setPc] = useState('');
-    //const pc = new RTCPeerConnection(servers);
     useEffect(() => {
         const servers = {
             iceServers: [
@@ -51,19 +53,16 @@ const FaceChat = () => {
     const remoteVideo = useRef(null);
     const callButton = useRef(null);
     const callInput = useRef(null);
+    const answerInput = useRef(null);
     const answerButton = useRef(null);
     const hangupButton = useRef(null);
 
-    //const webcamButton = document.getElementById('webcamButton');
-    //const webcamVideo = document.getElementById('webcamVideo');
-    //const callButton = document.getElementById('callButton');
-    //const callInput = document.getElementById('callInput');
-    //const answerButton = document.getElementById('answerButton');
-    //const remoteVideo = document.getElementById('remoteVideo');
-    //const hangupButton = document.getElementById('hangupButton');
+    const onAnswerIdInput = (event) => {
+        setAnswerInputId(event.target.value)
+    }
 
-    const onCallIdInput = (event) => {
-        setCallInputId(event.target.value)
+    const handleHangup = (event) => {
+        window.location.reload();
     }
 
     // 1. Setup media sources
@@ -89,8 +88,10 @@ const FaceChat = () => {
         answerButton.current.disabled = false;
         webcamButton.current.disabled = true; */
         setCallDisable(false);
+        setAnswerIdDisable(false);
         setAnswerDisable(false);
         setWebcamDisable(true);
+        setHangDisable(false);
     };
 
     // 2. Create an offer
@@ -103,7 +104,6 @@ const FaceChat = () => {
 
         // Get candidates for caller, save to db
         pc.onicecandidate = (event) => {
-            console.log("in ice")
             event.candidate && offerCandidates.add(event.candidate.toJSON());
         };
 
@@ -111,8 +111,6 @@ const FaceChat = () => {
         //{ offerToReceiveAudio: true, offerToReceiveVideo: true }
         const offerDescription = await pc.createOffer();
         await pc.setLocalDescription(offerDescription);
-
-        console.log(offerDescription.sdp);
 
         const offer = {
             sdp: offerDescription.sdp,
@@ -141,19 +139,16 @@ const FaceChat = () => {
             }
             });
         });
-
-        hangupButton.disabled = false;
     };
     
     // 3. Answer the call with the unique ID
     const handleAnswer = async () => {
-        const callId = callInputId;
+        const callId = answerInputId;
         const callDoc = firestore.collection('calls').doc(callId);
         const answerCandidates = callDoc.collection('answerCandidates');
         const offerCandidates = callDoc.collection('offerCandidates');
     
         pc.onicecandidate = (event) => {
-            console.log("second ice")
             event.candidate && answerCandidates.add(event.candidate.toJSON());
         };
     
@@ -166,7 +161,6 @@ const FaceChat = () => {
         const answerDescription = await pc.createAnswer();
         await pc.setLocalDescription(answerDescription);
 
-        console.log(answerDescription.sdp);
 
         const answer = {
             type: answerDescription.type,
@@ -195,7 +189,7 @@ const FaceChat = () => {
             <div className="videos">
                 <span>
                     <h3 style={{textAlign: 'center'}}>Local Stream</h3>
-                    <video ref={webcamVideo} autoPlay='true' playsInline></video> 
+                    <video ref={webcamVideo} autoPlay='true' muted playsInline></video> 
                 </span>
                 <span>
                     <h3 style={{textAlign: 'center'}}>Remote Stream</h3>
@@ -204,18 +198,30 @@ const FaceChat = () => {
             </div>
 
             <div className='instructions'>
+                <h2>1. Start Webcam</h2>
                 <button ref={webcamButton} className='buttons' onClick={handleWebcam} disabled={webcamDisable}>Start webcam</button> 
                 <br/>
-                <h2>2. Create a new Call</h2>
-                <button ref={callButton} className='buttons' onClick={handleCall} disabled={callDisable}>Create Call (offer)</button>
-                <br/>
-                <h2>3. Join a Call</h2>
-                <p>Answer the call from a different browser window or device</p>
-                <input ref={callInput} value={callInputId} onChange={onCallIdInput}/>
-                <button ref={answerButton} className='buttons' onClick={handleAnswer} disabled={answerDisable}>Answer</button>
+
+                <div className='createorjoin'>
+                    <div style={{padding: "2em"}}>
+                        <h2>2. Create a new Call</h2>
+                        <label>Send code to the reciever</label>
+                        <br/>
+                        <input ref={callInput} value={callInputId} disabled/>
+                        <button ref={callButton} className='buttons' onClick={handleCall} disabled={callDisable}>Create Call (offer)</button>
+                    </div>
+                    <div style={{padding: "2em"}}>
+                        <h2>3. Join a Call</h2>
+                        <label>Answer the call by pasting code below</label>
+                        <br/>
+                        <input ref={answerInput} value={answerInputId} onChange={onAnswerIdInput} disabled={answerIdDisable}/>
+                        <button ref={answerButton} className='buttons' onClick={handleAnswer} disabled={answerDisable}>Answer</button>
+                    </div>
+                </div>
+
                 <br/>
                 <h2>4. Hangup</h2>
-                <button ref={hangupButton} className='buttons' disabled={hangDisable}>Hangup</button>
+                <button ref={hangupButton} className='buttons' disabled={hangDisable} onClick={handleHangup} >Hangup</button>
             </div>
         </div>
     );

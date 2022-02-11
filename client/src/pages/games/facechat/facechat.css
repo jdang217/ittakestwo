@@ -33,3 +33,9 @@ video {
     text-align: center;
     margin: auto
 }
+
+.createorjoin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

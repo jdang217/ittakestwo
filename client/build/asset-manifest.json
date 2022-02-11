@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.9500c0ca.css",
-    "main.js": "/static/js/main.c021b531.js",
+    "main.css": "/static/css/main.33a84e91.css",
+    "main.js": "/static/js/main.19939afd.js",
     "static/media/FaceChatImage.jpg": "/static/media/FaceChatImage.5136cee9497920fd61df.jpg",
     "index.html": "/index.html",
-    "main.9500c0ca.css.map": "/static/css/main.9500c0ca.css.map",
-    "main.c021b531.js.map": "/static/js/main.c021b531.js.map"
+    "main.33a84e91.css.map": "/static/css/main.33a84e91.css.map",
+    "main.19939afd.js.map": "/static/js/main.19939afd.js.map"
   },
   "entrypoints": [
-    "static/css/main.9500c0ca.css",
-    "static/js/main.c021b531.js"
+    "static/css/main.33a84e91.css",
+    "static/js/main.19939afd.js"
   ]
 }
