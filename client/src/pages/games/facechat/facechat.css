@@ -1,0 +1,35 @@
+
+
+.title {
+    display: 'flex';
+    justify-content: 'center';
+    align-items: 'center';
+    height: '100vh';
+}
+
+video {
+    width: 40vw;
+    height: 30vw;
+    max-width: 40vw;
+    max-height: 30vw;
+    margin: 2rem;
+    background: #2c3e50;
+}
+
+.videos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.instructions {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.buttons {
+    display: block;
+    text-align: center;
+    margin: auto
+}

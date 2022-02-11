@@ -15,6 +15,7 @@ import SignUp from './pages/signup';
 import SignIn from './pages/signin';
 import SignOut from './pages/signout';
 import Profile from './pages/profile';
+import FaceChat from './pages/games/facechat/facechat';
 import axios from "axios";
 
 
@@ -70,6 +71,7 @@ class App extends React.Component {
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />
             <Route exact path='/sign-out' element={<SignOut isLoggedIn={isAuth} logout={this.logout}/>} />
             <Route exact path='/profile/:user' element={<Profile/>} />
+            <Route exact path='/facechat' element={<FaceChat/>} />
           </Routes>
         </Router>
       </div>
