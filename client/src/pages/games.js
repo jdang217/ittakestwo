@@ -6,6 +6,7 @@ import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 
 import FaceChatImage from './games/gameImages/FaceChatImage.jpg';
+import TicTacToeImage from './games/gameImages/TicTacToeImage.png';
 
 const Games = () => {
 
@@ -83,22 +84,10 @@ const Games = () => {
           redirect: 'facechat',
         },
         {
-          url: FaceChatImage,
-          title: 'FaceChat',
+          url: TicTacToeImage,
+          title: 'Tic Tac Toe',
           width: '50%',
-          redirect: 'facechat',
-        },
-        {
-          url: FaceChatImage,
-          title: 'FaceChat',
-          width: '50%',
-          redirect: 'facechat',
-        },
-        {
-          url: FaceChatImage,
-          title: 'FaceChat',
-          width: '50%',
-          redirect: 'facechat',
+          redirect: 'tictactoe',
         },
     ];
 

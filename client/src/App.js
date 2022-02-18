@@ -16,6 +16,7 @@ import SignIn from './pages/signin';
 import SignOut from './pages/signout';
 import Profile from './pages/profile';
 import FaceChat from './pages/games/facechat/facechat';
+import TicTacToe from "./pages/games/tictactoe/tictactoe";
 import axios from "axios";
 
 
@@ -57,9 +58,9 @@ class App extends React.Component {
     const { isAuth, user } = this.state;
     return (
       
-      <div>
+      <div> 
         <Router>
-          <Navbar isLoggedIn={isAuth} user={user} logout={this.logout} login={this.login}/>
+          <Navbar isLoggedIn={isAuth} user={user} logout={this.logout} login={this.login} />
           <Routes>
             <Route exact path='/' element={<Home />} />
             <Route exact path='/games' element={<Games/>} />
@@ -71,9 +72,10 @@ class App extends React.Component {
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />
             <Route exact path='/sign-out' element={<SignOut isLoggedIn={isAuth} logout={this.logout}/>} />
             <Route exact path='/profile/:user' element={<Profile/>} />
-            <Route exact path='/facechat' element={<FaceChat/>} />
+            <Route exact path='/facechat' element={<FaceChat user={user} />} />
+            <Route exact path='/tictactoe' element={<TicTacToe user={user} />} />
           </Routes>
-        </Router>
+        </Router> 
       </div>
     );
   }

@@ -34,6 +34,30 @@ video {
     margin: auto
 }
 
+.sendChat {
+    width: calc(80vw - 1rem);
+    height: 2em;
+    max-width: calc(80vw - 1rem);
+    max-height: 2em;
+    font-size: 16px;
+    margin-right: 1rem;
+}
+
+.chatBox {
+    width: calc(80vw + 4rem);
+    height: 8em;
+    max-width: calc(80vw + 4rem);
+    max-height: 8em;
+    font-size: 16px;
+    white-space: pre-wrap;
+    color: black;
+}
+
+.chatBox:disabled {
+    color: black;
+    font-weight: 500;
+}
+
 .createorjoin {
     display: flex;
     align-items: center;

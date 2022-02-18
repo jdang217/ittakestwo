@@ -1,10 +1,11 @@
 import React, {useEffect, useRef, useState} from 'react';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
+import moment from 'moment';
 
 import './facechat.css';
 
-const FaceChat = () => {
+const FaceChat = (props) => {
     const [webcamDisable, setWebcamDisable] = useState(false);
     const [callDisable, setCallDisable] = useState(true);
     const [answerDisable, setAnswerDisable] = useState(true);
@@ -13,6 +14,15 @@ const FaceChat = () => {
     const [answerInputId, setAnswerInputId] = useState('');
     const [callInputId, setCallInputId] = useState('');
 
+    const [sentReceiveOpener, setSentReceiveOpener] = useState(false);
+
+    const [messageBox, setMessageBox] = useState('');
+    const [chatBox, setChatBox] = useState('');
+
+    const [sendChannel, setSendChannel] = useState({});
+    const [receiveChannel, setReceiveChannel] = useState({});
+    //var sendChannel = null;
+    //var receiveChannel = null;
 
     const firebaseConfig = {
         apiKey: "AIzaSyCHcdPg44U4oWfG-BsYKv0YcF8vzX4kF1M",
@@ -43,6 +53,35 @@ const FaceChat = () => {
         };
         setPc(new RTCPeerConnection(servers));
     }, [])
+
+    useEffect(() => {
+        sendChannel.onopen = handleSendChannelStatusChange;
+        sendChannel.onclose = handleSendChannelStatusChange;
+        sendChannel.onmessage = handleReceiveMessage;
+    }, [sendChannel])
+
+    useEffect(() => {
+        receiveChannel.onmessage = handleReceiveMessage;
+        receiveChannel.onopen = handleReceiveChannelStatusChange;
+        receiveChannel.onclose = handleReceiveChannelStatusChange;
+        receiveChannel.onerror = handleReceiveChannelStatusChange;
+        receiveChannel.onclosing = handleReceiveChannelStatusChange;
+        if (!sentReceiveOpener) {
+            setSentReceiveOpener(false);
+            if(receiveChannel.readyState === 'open') {
+                var today = new Date();
+                var datetime = moment(today).format("(M/D/YY-h:mma)");
+                const opener = {
+                    user: props.user,
+                    timestamp: datetime,
+                    type: 'opener'
+                }
+                receiveChannel.send(JSON.stringify(opener));
+            }
+        }
+        
+    }, [receiveChannel])
+    
     
     let localStream = null; //curr webcam
     let remoteStream = null; //other webcam
@@ -56,6 +95,8 @@ const FaceChat = () => {
     const answerInput = useRef(null);
     const answerButton = useRef(null);
     const hangupButton = useRef(null);
+    const sendChat = useRef(null);
+    const chat = useRef(null);
 
     const onAnswerIdInput = (event) => {
         setAnswerInputId(event.target.value)
@@ -63,6 +104,91 @@ const FaceChat = () => {
 
     const handleHangup = (event) => {
         window.location.reload();
+    }
+
+    const handleSendChannelStatusChange = (event) => {
+        if (sendChannel) {
+          console.log("Send channel's status has changed to " +
+                      sendChannel.readyState);
+        }
+
+        if (sendChannel.readyState === 'open') {
+            var today = new Date();
+            var datetime = moment(today).format("(M/D/YY-h:mma)");
+            const opener = {
+                user: props.user,
+                timestamp: datetime,
+                type: 'opener'
+            }
+            sendChannel.send(JSON.stringify(opener));
+        }
+    }
+
+    const receiveChannelCallback = (event) => {
+        setReceiveChannel(event.channel);
+    }
+
+    const handleReceiveMessage = (event) => {
+        var data = JSON.parse(event.data)
+
+        switch(data.type) {
+            case 'opener':
+                var opener = data.timestamp + " SERVER" + ": User " + data.user + " has connected!";
+                setChatBox(prev => prev + opener);
+                break;
+            case 'chat':
+                var chatMessage = "\n" + data.timestamp + " " + data.user + ": " + data.message;
+                setChatBox(prev => prev + chatMessage);
+                chat.current.scrollTop = chat.current.scrollHeight;
+
+                break;
+            case 'end':
+                break;
+            default:
+                console.log("datachannel type error")
+        }
+    }
+
+    const handleReceiveChannelStatusChange = (event) => {
+        if (receiveChannel) {
+          console.log("Receive channel's status has changed to " +
+                      receiveChannel.readyState);
+        }
+        
+        // Here you would do stuff that needs to be done
+        // when the channel's status changes.
+        if(receiveChannel.readyState === 'open') {
+            var today = new Date();
+            var datetime = moment(today).format("(M/D/YY-h:mma)");
+            const opener = {
+                user: props.user,
+                timestamp: datetime,
+                type: 'opener'
+            }
+            receiveChannel.send(JSON.stringify(opener));
+        }
+    }
+
+    const handleMessageChange = (event) => {
+        setMessageBox(event.target.value)
+    }
+
+    const handleChatSubmit = (event) => {
+        var today = new Date();
+        var datetime = moment(today).format("(M/D/YY-h:mma)");
+        const chatMessage = {
+            user: props.user,
+            timestamp: datetime,
+            type: 'chat',
+            message: messageBox,
+        }
+
+        if (receiveChannel.readyState === 'open') {
+            receiveChannel.send(JSON.stringify(chatMessage));
+        }
+        else if (sendChannel.readyState === 'open') {
+            sendChannel.send(JSON.stringify(chatMessage));
+        }
     }
 
     // 1. Setup media sources
@@ -83,10 +209,9 @@ const FaceChat = () => {
         };
         webcamVideo.current.srcObject = localStream;
         remoteVideo.current.srcObject = remoteStream;
-    
-        /* callButton.current.disabled = false;
-        answerButton.current.disabled = false;
-        webcamButton.current.disabled = true; */
+
+        setSendChannel(pc.createDataChannel("sendChannel"))
+
         setCallDisable(false);
         setAnswerIdDisable(false);
         setAnswerDisable(false);
@@ -139,6 +264,7 @@ const FaceChat = () => {
             }
             });
         });
+
     };
     
     // 3. Answer the call with the unique ID
@@ -171,7 +297,6 @@ const FaceChat = () => {
     
         offerCandidates.onSnapshot((snapshot) => {
             snapshot.docChanges().forEach((change) => {
-                console.log(change);
                 if (change.type === 'added') {
                     let data = change.doc.data();
                     pc.addIceCandidate(new RTCIceCandidate(data)).catch(e => {
@@ -180,6 +305,8 @@ const FaceChat = () => {
                 }
             });
         });
+
+        pc.ondatachannel = receiveChannelCallback;
     }; 
 
     return (
@@ -198,20 +325,28 @@ const FaceChat = () => {
             </div>
 
             <div className='instructions'>
-                <h2>1. Start Webcam</h2>
+                <textarea ref={chat} name='chatBox' className='chatBox' type="text" placeholder='Waiting for connection...' value={chatBox} disabled></textarea>
+                <div>
+                    <form onSubmit={handleChatSubmit} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={handleMessageChange}></textarea>
+                        
+                        <input type="button" value="Submit" onClick={handleChatSubmit} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
+                    </form>
+                </div>
+                <h3>1. Start Webcam</h3>
                 <button ref={webcamButton} className='buttons' onClick={handleWebcam} disabled={webcamDisable}>Start webcam</button> 
                 <br/>
 
                 <div className='createorjoin'>
                     <div style={{padding: "2em"}}>
-                        <h2>2. Create a new Call</h2>
-                        <label>Send code to the reciever</label>
+                        <h3>2. Create a new Call</h3>
+                        <label>Send code to the receiver</label>
                         <br/>
                         <input ref={callInput} value={callInputId} disabled/>
                         <button ref={callButton} className='buttons' onClick={handleCall} disabled={callDisable}>Create Call (offer)</button>
                     </div>
                     <div style={{padding: "2em"}}>
-                        <h2>3. Join a Call</h2>
+                        <h3>Or Join a Call</h3>
                         <label>Answer the call by pasting code below</label>
                         <br/>
                         <input ref={answerInput} value={answerInputId} onChange={onAnswerIdInput} disabled={answerIdDisable}/>
@@ -220,7 +355,7 @@ const FaceChat = () => {
                 </div>
 
                 <br/>
-                <h2>4. Hangup</h2>
+                <h3>3. Hangup</h3>
                 <button ref={hangupButton} className='buttons' disabled={hangDisable} onClick={handleHangup} >Hangup</button>
             </div>
         </div>

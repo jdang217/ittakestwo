@@ -76,3 +76,69 @@
     max-width: 88vw;
     overflow-wrap: break-word;
 }
+
+.checkboxcontainer {
+    position: relative;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: space-between;
+    left: 5vw;
+    max-width: 90vw;
+    align-items: flex-start;
+}
+
+.checkbox {
+    margin-top: 40px;
+    position: relative;
+    white-space: pre-wrap;
+    display: flex;
+    flex-direction: column;
+    /*text-align: left;*/
+    /*justify-content: center;*/
+    align-items: center;
+    border-radius: 25px;
+    border: 2px solid #63D471;
+    /*left: 5vw;*/
+    /*height: 125px;*/
+    min-height: 125px;
+    width: 28vw;
+    overflow: auto;
+}
+
+.checkboxtitle {
+    text-align: center;
+    display: flex;
+    max-width: 28vw;
+    font-size: 20px;
+}
+
+.checkboxtext {
+    text-align: left;
+    /*text-indent: 2vw;*/
+    /*padding-left: 1vw;*/
+    width: 25vw;
+    max-width: 25vw;
+    overflow-wrap: break-word;
+    font-size: 14px;
+}
+
+.checkboxinput {
+    display: flex;
+    max-width: 25vw;
+    width: 25vw;
+    font-size: 14px;
+    background-color: transparent;
+    border: transparent;
+    resize: none;
+    overflow: hidden;
+}
+
+.checkboxsubmit {
+    display: flex;
+    max-width: 10vw;
+    width: 10vw;
+    font-size: 14px;
+    justify-content: center;
+}

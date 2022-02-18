@@ -27,6 +27,7 @@ app.all('/api/signin', require('./routes/userAuth/signin.js'));
 
 //devblog
 app.all('/api/devblog', require('./routes/devblog/devblog.js'))
+app.all('/api/checklist', require('./routes/devblog/checklist.js'))
 
 //profile
 app.all('/api/profile/:user', require('./routes/userProfile/profile'))

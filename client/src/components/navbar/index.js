@@ -47,12 +47,12 @@ const Navbar = (props) => {
 						Sign Up
 					</NavLink>)}
 				</NavMenu>
-					
+				
 				{props.isLoggedIn && (
 				<AccBtn>
 					<AccountMenu user={props.user}/>
 				</AccBtn>)}
-
+				
 				{!props.isLoggedIn && (
 				<NavBtn>
   					<NavBtnLink to='/sign-in'>Log In</NavBtnLink>
