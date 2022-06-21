@@ -17,6 +17,9 @@ import SignOut from './pages/signout';
 import Profile from './pages/profile';
 import FaceChat from './pages/games/facechat/facechat';
 import TicTacToe from "./pages/games/tictactoe/tictactoe";
+import Template from "./pages/games/1v1Template";
+import MultiPeerTemplate from "./pages/games/multiPeerTemplate";
+import Poker from "./pages/games/poker/poker";
 import axios from "axios";
 
 
@@ -74,6 +77,9 @@ class App extends React.Component {
             <Route exact path='/profile/:user' element={<Profile/>} />
             <Route exact path='/facechat' element={<FaceChat user={user} />} />
             <Route exact path='/tictactoe' element={<TicTacToe user={user} />} />
+            <Route exact path='/template' element={<Template user={user} />} />
+            <Route exact path='/multi-peer-template' element={<MultiPeerTemplate user={user} />} />
+            <Route exact path='/poker' element={<Poker user={user} />} />
           </Routes>
         </Router> 
       </div>

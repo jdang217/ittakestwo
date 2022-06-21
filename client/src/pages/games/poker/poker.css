@@ -1,0 +1,100 @@
+.tableContainer {
+    position: relative;
+    width: 1400px;
+    height: 560px;
+    margin: auto;
+}
+
+.table {
+    width: 1100px;
+    margin: auto;
+    display: block;
+    position: absolute;
+    left: 700px;
+    transform: translateX(-50%);
+}
+
+.pokerboard {
+    position: absolute; 
+    top: 31%; 
+    left: 480px;
+    display: flex;
+    gap: 10px;
+}
+
+.hand{
+    position: absolute;
+    top: 69%;
+    left: 615px;
+    display: flex;
+    gap: 10px;
+}
+
+@font-face {
+    font-family: numbersDeuce;
+    src: url("./images/numbers-deuce.ttf");
+}
+
+.card {
+    height: 120px;
+    width: 80px;
+    background-color: white;
+    border: 1px solid black;
+    padding-left: 3px;
+    padding-right: 5px;
+
+
+    display: grid;
+    grid-template-columns: 10% 25% 30% 25% 10%;
+    grid-template-rows: 10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 10px 10px;
+    grid-template-areas:
+        "value1 . . . ."
+        ". . . . ."
+        "smallsuit1 . . . ."
+        ". . . . ."
+        ". . suit . ."
+        ". . suit . ."
+        ". . . . ."
+        ". . . . ."
+        ". . . . ."
+        ". . . . smallsuit2"
+        ". . . . value2"
+        ". . . . value2"
+}
+
+.suit {
+    width: 40px;
+    height: 40px;
+    grid-area: suit;
+    justify-self: center;
+}
+
+.smallsuit1 {
+    width: 10px;
+    height: 10px;
+    grid-area: smallsuit1;
+}
+
+.smallsuit2 {
+    width: 10px;
+    height: 10px;
+    transform: rotate(180deg);
+    grid-area: smallsuit2;
+}
+
+.value {
+    font-family: numbersDeuce;
+    width: 10px;
+    text-align: center;
+    grid-area: value1;
+    white-space: nowrap;
+}
+
+.value2 {
+    font-family: numbersDeuce;
+    width: 10px;
+    text-align: center;
+    transform: rotate(180deg);
+    grid-area: value2;
+    white-space: nowrap;
+}

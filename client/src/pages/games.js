@@ -78,16 +78,34 @@ const Games = () => {
 
     const images = [
         {
-          url: FaceChatImage,
-          title: 'FaceChat',
-          width: '50%',
-          redirect: 'facechat',
+            url: FaceChatImage,
+            title: 'FaceChat',
+            width: '50%',
+            redirect: 'facechat',
         },
         {
-          url: TicTacToeImage,
-          title: 'Tic Tac Toe',
-          width: '50%',
-          redirect: 'tictactoe',
+            url: TicTacToeImage,
+            title: 'Tic Tac Toe',
+            width: '50%',
+            redirect: 'tictactoe',
+        },
+        {
+            url: TicTacToeImage,
+            title: 'Poker',
+            width: '50%',
+            redirect: 'poker',
+        },
+        {
+            url: TicTacToeImage,
+            title: '1v1 Template',
+            width: '50%',
+            redirect: 'template',
+        },
+        {
+            url: TicTacToeImage,
+            title: 'Multi Peer Template',
+            width: '50%',
+            redirect: 'multi-peer-template',
         },
     ];
 

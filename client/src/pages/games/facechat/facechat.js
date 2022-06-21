@@ -21,8 +21,6 @@ const FaceChat = (props) => {
 
     const [sendChannel, setSendChannel] = useState({});
     const [receiveChannel, setReceiveChannel] = useState({});
-    //var sendChannel = null;
-    //var receiveChannel = null;
 
     const firebaseConfig = {
         apiKey: "AIzaSyCHcdPg44U4oWfG-BsYKv0YcF8vzX4kF1M",
@@ -67,7 +65,6 @@ const FaceChat = (props) => {
         receiveChannel.onerror = handleReceiveChannelStatusChange;
         receiveChannel.onclosing = handleReceiveChannelStatusChange;
         if (!sentReceiveOpener) {
-            setSentReceiveOpener(false);
             if(receiveChannel.readyState === 'open') {
                 var today = new Date();
                 var datetime = moment(today).format("(M/D/YY-h:mma)");
@@ -77,6 +74,7 @@ const FaceChat = (props) => {
                     type: 'opener'
                 }
                 receiveChannel.send(JSON.stringify(opener));
+                setSentReceiveOpener(true);
             }
         }
         
@@ -107,11 +105,6 @@ const FaceChat = (props) => {
     }
 
     const handleSendChannelStatusChange = (event) => {
-        if (sendChannel) {
-          console.log("Send channel's status has changed to " +
-                      sendChannel.readyState);
-        }
-
         if (sendChannel.readyState === 'open') {
             var today = new Date();
             var datetime = moment(today).format("(M/D/YY-h:mma)");
@@ -130,7 +123,6 @@ const FaceChat = (props) => {
 
     const handleReceiveMessage = (event) => {
         var data = JSON.parse(event.data)
-
         switch(data.type) {
             case 'opener':
                 var opener = data.timestamp + " SERVER" + ": User " + data.user + " has connected!";
@@ -140,7 +132,6 @@ const FaceChat = (props) => {
                 var chatMessage = "\n" + data.timestamp + " " + data.user + ": " + data.message;
                 setChatBox(prev => prev + chatMessage);
                 chat.current.scrollTop = chat.current.scrollHeight;
-
                 break;
             case 'end':
                 break;
@@ -149,12 +140,7 @@ const FaceChat = (props) => {
         }
     }
 
-    const handleReceiveChannelStatusChange = (event) => {
-        if (receiveChannel) {
-          console.log("Receive channel's status has changed to " +
-                      receiveChannel.readyState);
-        }
-        
+    const handleReceiveChannelStatusChange = (event) => {        
         // Here you would do stuff that needs to be done
         // when the channel's status changes.
         if(receiveChannel.readyState === 'open') {
@@ -171,24 +157,55 @@ const FaceChat = (props) => {
 
     const handleMessageChange = (event) => {
         setMessageBox(event.target.value)
+        scrollChat();
     }
 
     const handleChatSubmit = (event) => {
         var today = new Date();
         var datetime = moment(today).format("(M/D/YY-h:mma)");
+
         const chatMessage = {
-            user: props.user,
+            user: props.user ? props.user: "GUEST",
             timestamp: datetime,
             type: 'chat',
             message: messageBox,
         }
 
-        if (receiveChannel.readyState === 'open') {
-            receiveChannel.send(JSON.stringify(chatMessage));
+        if (chatMessage.message) {
+            if (receiveChannel.readyState === 'open') {
+                receiveChannel.send(JSON.stringify(chatMessage));
+            }
+            else if (sendChannel.readyState === 'open') {
+                sendChannel.send(JSON.stringify(chatMessage));
+            }
+            
+            var message = "\n" + chatMessage.timestamp + " " + chatMessage.user + ": " + chatMessage.message;
+            setChatBox(prev => prev + message);
+            setMessageBox("");
         }
-        else if (sendChannel.readyState === 'open') {
-            sendChannel.send(JSON.stringify(chatMessage));
+        chat.current.scrollTop = chat.current.scrollHeight;
+    }
+
+    const onEnterPress = (e) => {
+        if(e.keyCode == 13 && e.shiftKey == false) {
+            e.preventDefault();
+            handleChatSubmit();
         }
+        scrollChat();
+    }
+
+    const scrollChat = (e) => {
+        chat.current.scrollTop = chat.current.scrollHeight;
+    }
+
+    function makeid() {
+        var result = '';
+        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < 5; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        }
+        return result;
     }
 
     // 1. Setup media sources
@@ -221,7 +238,9 @@ const FaceChat = (props) => {
 
     // 2. Create an offer
     const handleCall = async () => {
-        const callDoc = firestore.collection('calls').doc();
+        var id = makeid();
+        console.log(id)
+        const callDoc = firestore.collection('calls').doc(id);
         const offerCandidates = callDoc.collection('offerCandidates');
         const answerCandidates = callDoc.collection('answerCandidates');
 
@@ -315,11 +334,9 @@ const FaceChat = (props) => {
 
             <div className="videos">
                 <span>
-                    <h3 style={{textAlign: 'center'}}>Local Stream</h3>
                     <video ref={webcamVideo} autoPlay='true' muted playsInline></video> 
                 </span>
                 <span>
-                    <h3 style={{textAlign: 'center'}}>Remote Stream</h3>
                     <video ref={remoteVideo} autoPlay='true' playsInline></video>
                 </span>
             </div>
@@ -328,7 +345,7 @@ const FaceChat = (props) => {
                 <textarea ref={chat} name='chatBox' className='chatBox' type="text" placeholder='Waiting for connection...' value={chatBox} disabled></textarea>
                 <div>
                     <form onSubmit={handleChatSubmit} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={handleMessageChange}></textarea>
+                        <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={handleMessageChange} onKeyDown={onEnterPress}></textarea>
                         
                         <input type="button" value="Submit" onClick={handleChatSubmit} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
                     </form>
@@ -343,7 +360,7 @@ const FaceChat = (props) => {
                         <label>Send code to the receiver</label>
                         <br/>
                         <input ref={callInput} value={callInputId} disabled/>
-                        <button ref={callButton} className='buttons' onClick={handleCall} disabled={callDisable}>Create Call (offer)</button>
+                        <button ref={callButton} className='buttons' onClick={handleCall} disabled={callDisable}>Create Call</button>
                     </div>
                     <div style={{padding: "2em"}}>
                         <h3>Or Join a Call</h3>

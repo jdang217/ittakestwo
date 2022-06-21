@@ -41,6 +41,7 @@ video {
     max-height: 2em;
     font-size: 16px;
     margin-right: 1rem;
+    resize: none;
 }
 
 .chatBox {
@@ -51,6 +52,7 @@ video {
     font-size: 16px;
     white-space: pre-wrap;
     color: black;
+    resize: none;
 }
 
 .chatBox:disabled {

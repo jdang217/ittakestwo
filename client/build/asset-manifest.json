@@ -1,15 +1,21 @@
 {
   "files": {
-    "main.css": "/static/css/main.f26a44d6.css",
-    "main.js": "/static/js/main.96d289d5.js",
+    "main.css": "/static/css/main.d9929c72.css",
+    "main.js": "/static/js/main.528e8426.js",
     "static/media/TicTacToeImage.png": "/static/media/TicTacToeImage.e5eafb42f28083364a27.png",
+    "static/media/pokertable.png": "/static/media/pokertable.30466f6c661f970228ba.png",
     "static/media/FaceChatImage.jpg": "/static/media/FaceChatImage.5136cee9497920fd61df.jpg",
+    "static/media/numbers-deuce.ttf": "/static/media/numbers-deuce.0aa2a979f109bf6f9867.ttf",
+    "static/media/heart.png": "/static/media/heart.6e779c2fdcfa2d4cab98.png",
+    "static/media/club.png": "/static/media/club.1110650baeb76075952a.png",
+    "static/media/diamond.png": "/static/media/diamond.0bdbea5826dde5a4b8fe.png",
+    "static/media/spade.png": "/static/media/spade.85c88aa11970415643af.png",
     "index.html": "/index.html",
-    "main.f26a44d6.css.map": "/static/css/main.f26a44d6.css.map",
-    "main.96d289d5.js.map": "/static/js/main.96d289d5.js.map"
+    "main.d9929c72.css.map": "/static/css/main.d9929c72.css.map",
+    "main.528e8426.js.map": "/static/js/main.528e8426.js.map"
   },
   "entrypoints": [
-    "static/css/main.f26a44d6.css",
-    "static/js/main.96d289d5.js"
+    "static/css/main.d9929c72.css",
+    "static/js/main.528e8426.js"
   ]
 }
