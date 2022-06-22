@@ -14,7 +14,6 @@ function auth(req, res, next) {
         const decoded = jwt.verify(token, process.env.JWT_SECRET)
         //add user from payload
         req.user = decoded;
-
         /*decoded will contain user id in the format:
         {
             id: '12345678abcdefgh12345678',

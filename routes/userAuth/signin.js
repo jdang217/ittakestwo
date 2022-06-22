@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 const oneDay = 86400;
 
 const auth = require('../../middleware/auth.js');
+const Profile = require('../../models/profileModel.js');
 
 router.post('/api/signin', (req, res, next) => {
 
@@ -64,6 +65,7 @@ router.get('/api/signin', auth, (req, res, next) => {
 		next()
 	}
 	else {
+		
 		User.findById(req.user.id)
 			.select('-password')
 			.then(user => res.json(user));

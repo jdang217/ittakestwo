@@ -41,7 +41,7 @@ class App extends React.Component {
     })
     .then((response) => {
       //handle success
-      this.setState({ isAuth: true, user: response.data.username });
+      this.setState({ isAuth: true, user: response.data.username});
     })
     .catch((response) => {
       //handle error
@@ -74,7 +74,7 @@ class App extends React.Component {
             <Route exact path='/sign-up' element={<SignUp/>} />
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />
             <Route exact path='/sign-out' element={<SignOut isLoggedIn={isAuth} logout={this.logout}/>} />
-            <Route exact path='/profile/:user' element={<Profile/>} />
+            <Route exact path='/profile/:user' element={<Profile user={user} />} />
             <Route exact path='/facechat' element={<FaceChat user={user} />} />
             <Route exact path='/tictactoe' element={<TicTacToe user={user} />} />
             <Route exact path='/template' element={<Template user={user} />} />
