@@ -107,6 +107,12 @@ const Games = () => {
             width: '50%',
             redirect: 'multi-peer-template',
         },
+        {
+            url: TicTacToeImage,
+            title: 'Multi Peer Template Rewrite',
+            width: '50%',
+            redirect: 'multi-peer-template-rewrite',
+        },
     ];
 
     return (
