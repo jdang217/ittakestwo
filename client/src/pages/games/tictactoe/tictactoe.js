@@ -3,11 +3,13 @@ import Square from './square';
 import firebase from 'firebase/app';
 import 'firebase/firestore';
 import moment from 'moment';
+import _1v1Functions from '../1v1Functions';
 
 import "./tictactoe.css"
 
 const TicTacToe = (props) => {
 
+    const v1Functions = new _1v1Functions();
     const [board, setBoard] = useState(Array(9).fill(null));
     const [xIsNext, setXisNext] = useState(true);
     const [isX, setIsX] = useState(Math.random() < 0.5 ? true: false);
@@ -88,22 +90,6 @@ const TicTacToe = (props) => {
     const [sendChannel, setSendChannel] = useState({});
     const [receiveChannel, setReceiveChannel] = useState({});
 
-    const firebaseConfig = {
-        apiKey: "AIzaSyCHcdPg44U4oWfG-BsYKv0YcF8vzX4kF1M",
-        authDomain: "ittakestwo-8d2b7.firebaseapp.com",
-        projectId: "ittakestwo-8d2b7",
-        storageBucket: "ittakestwo-8d2b7.appspot.com",
-        messagingSenderId: "335382479790",
-        appId: "1:335382479790:web:bca774cf112969bd9dbe3f",
-        measurementId: "G-YNY8CXEV47"
-    };
-
-    if (!firebase.apps.length) {
-        firebase.initializeApp(firebaseConfig);
-    }
-    
-    const firestore = firebase.firestore();
-
     
     const [pc, setPc] = useState('');
     useEffect(() => {
@@ -119,20 +105,19 @@ const TicTacToe = (props) => {
     }, [])
 
     useEffect(() => {
-        sendChannel.onopen = handleSendChannelStatusChange;
-        sendChannel.onclose = handleSendChannelStatusChange;
+        sendChannel.onopen = (e) => v1Functions.handleSendChannelStatusChange(props.user, sendChannel, joiner, e);
+        sendChannel.onclose = (e) => v1Functions.handleSendChannelStatusChange(props.user, sendChannel, joiner, e);
         sendChannel.onmessage = handleReceiveMessage;
     }, [sendChannel])
 
     useEffect(() => {
         receiveChannel.onmessage = handleReceiveMessage;
-        receiveChannel.onopen = handleReceiveChannelStatusChange;
-        receiveChannel.onclose = handleReceiveChannelStatusChange;
-        receiveChannel.onerror = handleReceiveChannelStatusChange;
-        receiveChannel.onclosing = handleReceiveChannelStatusChange;
+        receiveChannel.onopen = (e) => v1Functions.handleReceiveChannelStatusChange(receiveChannel, props.user, e);
+        receiveChannel.onclose = (e) => v1Functions.handleReceiveChannelStatusChange(receiveChannel, props.user, e);
+        receiveChannel.onerror = (e) => v1Functions.handleReceiveChannelStatusChange(receiveChannel, props.user, e);
+        receiveChannel.onclosing = (e) => v1Functions.handleReceiveChannelStatusChange(receiveChannel, props.user, e);
         if (!sentReceiveOpener) {
             if(receiveChannel.readyState === 'open') {
-                console.log("receffect")
                 var today = new Date();
                 var datetime = moment(today).format("(M/D/YY-h:mma)");
                 const opener = {
@@ -147,6 +132,10 @@ const TicTacToe = (props) => {
         
     }, [receiveChannel])
     
+    //make sure chat box stays scrolled to the bottom
+    useEffect(() => {
+        chat.current.scrollTop = chat.current.scrollHeight;
+    }, [chatBox])
 
     //HTML elements
     const startButton = useRef(null);
@@ -158,41 +147,13 @@ const TicTacToe = (props) => {
     const sendChat = useRef(null);
     const chat = useRef(null);
 
-    const onJoinIdInput = (event) => {
-        setJoinInputId(event.target.value)
-    }
-
     const handleQuit = (event) => {
         window.location.reload();
-    }
-
-    const handleSendChannelStatusChange = (event) => {
-        console.log(sendChannel.readyState, receiveChannel.readyState)
-        if (sendChannel.readyState === 'open' && joiner.current === false) {
-            var today = new Date();
-            var datetime = moment(today).format("(M/D/YY-h:mma)");
-            const opener = {
-                user: props.user,
-                timestamp: datetime,
-                type: 'opener',
-                isX: isX,
-            }
-            console.log("sending")
-            setTimeout(() => {
-                sendChannel.send(JSON.stringify(opener));
-                console.log("sent")
-            }, 100);
-        }
-    }
-
-    const receiveChannelCallback = (event) => {
-        setReceiveChannel(event.channel);
     }
 
     const handleReceiveMessage = (event) => {
         setUpdate(update => update + 1)
         var data = JSON.parse(event.data)
-        console.log(data)
         switch(data.type) {
             case 'opener':
                 const opp = data.user ? data.user: "GUEST"
@@ -206,7 +167,6 @@ const TicTacToe = (props) => {
             case 'chat':
                 var chatMessage = "\n" + data.timestamp + " " + data.user + ": " + data.message;
                 setChatBox(prev => prev + chatMessage);
-                chat.current.scrollTop = chat.current.scrollHeight;
                 break;
             case 'end':
                 break;
@@ -216,55 +176,6 @@ const TicTacToe = (props) => {
             default:
                 console.log("datachannel type error")
         }
-    }
-
-    const handleReceiveChannelStatusChange = (event) => {        
-        // Here you would do stuff that needs to be done
-        // when the channel's status changes.
-        console.log("rec", receiveChannel.readyState)
-        if(receiveChannel.readyState === 'open') {
-            var today = new Date();
-            var datetime = moment(today).format("(M/D/YY-h:mma)");
-            const opener = {
-                user: props.user,
-                timestamp: datetime,
-                type: 'opener'
-            }
-            receiveChannel.send(JSON.stringify(opener));
-        }
-    }
-
-    const handleMessageChange = (event) => {
-        setMessageBox(event.target.value)
-        scrollChat();
-    }
-
-    const handleChatSubmit = (event) => {
-        var today = new Date();
-        var datetime = moment(today).format("(M/D/YY-h:mma)");
-
-        const chatMessage = {
-            user: props.user ? props.user: "GUEST",
-            timestamp: datetime,
-            type: 'chat',
-            message: messageBox,
-        }
-
-        if (chatMessage.message) {
-            if (receiveChannel.readyState === 'open') {
-                console.log("send to rec")
-                receiveChannel.send(JSON.stringify(chatMessage));
-            }
-            else if (sendChannel.readyState === 'open') {
-                console.log("send to send")
-                sendChannel.send(JSON.stringify(chatMessage));
-            }
-            
-            var message = "\n" + chatMessage.timestamp + " " + chatMessage.user + ": " + chatMessage.message;
-            setChatBox(prev => prev + message);
-            setMessageBox("");
-        }
-        chat.current.scrollTop = chat.current.scrollHeight;
     }
 
     function handleTurn(square) {
@@ -292,23 +203,8 @@ const TicTacToe = (props) => {
     const onEnterPress = (e) => {
         if(e.keyCode === 13 && e.shiftKey === false) {
             e.preventDefault();
-            handleChatSubmit();
+            v1Functions.handleChatSubmit(props.user, messageBox, receiveChannel, sendChannel, setChatBox, setMessageBox, e);
         }
-        scrollChat();
-    }
-
-    const scrollChat = (e) => {
-        chat.current.scrollTop = chat.current.scrollHeight;
-    }
-
-    function makeid() {
-        var result = '';
-        var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        var charactersLength = characters.length;
-        for ( var i = 0; i < 5; i++ ) {
-            result += characters.charAt(Math.floor(Math.random() * charactersLength));
-        }
-        return result;
     }
 
     // 1. Setup media sources
@@ -324,92 +220,13 @@ const TicTacToe = (props) => {
 
     // 2. Create an offer
     const handleInvite = async () => {
-        var id = makeid();
-        const callDoc = firestore.collection('calls').doc(id);
-        const offerCandidates = callDoc.collection('offerCandidates');
-        const answerCandidates = callDoc.collection('answerCandidates');
-
-        setInviteInputId(callDoc.id);
-
-        // Get candidates for caller, save to db
-        pc.onicecandidate = (event) => {
-            event.candidate && offerCandidates.add(event.candidate.toJSON());
-        };
-
-        // Create offer
-        const offerDescription = await pc.createOffer();
-        await pc.setLocalDescription(offerDescription);
-
-        const offer = {
-            sdp: offerDescription.sdp,
-            type: offerDescription.type,
-        };
-
-        await callDoc.set({ offer });
-
-        // Listen for remote answer
-        callDoc.onSnapshot((snapshot) => {
-            const data = snapshot.data();
-            if (!pc.currentRemoteDescription && data?.answer) {
-                const answerDescription = new RTCSessionDescription(data.answer);
-                pc.setRemoteDescription(answerDescription);
-            }
-        });
-
-        // When answered, add candidate to peer connection
-        answerCandidates.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-            if (change.type === 'added') {
-                const candidate = new RTCIceCandidate(change.doc.data());
-                pc.addIceCandidate(candidate).catch(e => {
-                    console.error(e);
-                });
-            }
-            });
-        });
-
+        const invite = await v1Functions.handleInvite(pc);
+        setInviteInputId(invite.id);
     };
     
     // 3. Answer the call with the unique ID
     const handleJoin = async () => {
-        joiner.current = true;
-        const callId = joinInputId;
-        const callDoc = firestore.collection('calls').doc(callId);
-        const answerCandidates = callDoc.collection('answerCandidates');
-        const offerCandidates = callDoc.collection('offerCandidates');
-    
-        pc.onicecandidate = (event) => {
-            event.candidate && answerCandidates.add(event.candidate.toJSON());
-        };
-    
-        const callData = (await callDoc.get()).data();
-    
-        const offerDescription = callData.offer;
-        await pc.setRemoteDescription(new RTCSessionDescription(offerDescription));
-    
-        const answerDescription = await pc.createAnswer();
-        await pc.setLocalDescription(answerDescription);
-
-
-        const answer = {
-            type: answerDescription.type,
-            sdp: answerDescription.sdp,
-        };
-    
-        await callDoc.update({ answer });
-    
-        offerCandidates.onSnapshot((snapshot) => {
-            snapshot.docChanges().forEach((change) => {
-                if (change.type === 'added') {
-                    let data = change.doc.data();
-                    pc.addIceCandidate(new RTCIceCandidate(data)).catch(e => {
-                        console.error(e.name)
-                    });
-                }
-            });
-        });
-
-        pc.ondatachannel = receiveChannelCallback;
+        await v1Functions.handleJoin(joiner, joinInputId, pc, setReceiveChannel);
     }; 
     
     return (
@@ -439,10 +256,10 @@ const TicTacToe = (props) => {
             <div className='chat'>
                 <textarea ref={chat} name='chatBox' className='chatBox' type="text" placeholder='Waiting for connection...' value={chatBox} disabled></textarea>
                 <div>
-                    <form onSubmit={handleChatSubmit} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                        <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={handleMessageChange} onKeyDown={onEnterPress}></textarea>
+                    <form onSubmit={(e) => v1Functions.handleChatSubmit(props.user, messageBox, receiveChannel, sendChannel, setChatBox, setMessageBox, e)} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                        <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={(e) => v1Functions.handleMessageChange(setMessageBox, e)} onKeyDown={onEnterPress}></textarea>
                         
-                        <input type="button" value="Submit" onClick={handleChatSubmit} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
+                        <input type="button" value="Submit" onClick={(e) => v1Functions.handleChatSubmit(props.user, messageBox, receiveChannel, sendChannel, setChatBox, setMessageBox, e)} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
                     </form>
                 </div>
             </div>
@@ -463,7 +280,7 @@ const TicTacToe = (props) => {
                     <h3>Or Join a Call</h3>
                     <label>Answer the call by pasting code below</label>
                     <br/>
-                    <input ref={joinInput} value={joinInputId} onChange={onJoinIdInput} disabled={joinIdDisable}/>
+                    <input ref={joinInput} value={joinInputId} onChange={(e) => v1Functions.onJoinIdInput(setJoinInputId, e)} disabled={joinIdDisable}/>
                     <button ref={joinButton} className='buttons' onClick={handleJoin} disabled={joinDisable}>Answer</button>
                 </div>
             </div>
