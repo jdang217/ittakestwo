@@ -6,6 +6,7 @@ import moment from 'moment';
 import _1v1Functions from '../1v1Functions';
 
 import "./tictactoe.css"
+import { containerClasses } from '@mui/material';
 
 const TicTacToe = (props) => {
 
@@ -15,11 +16,14 @@ const TicTacToe = (props) => {
     const [isX, setIsX] = useState(Math.random() < 0.5 ? true: false);
     const [update, setUpdate] = useState(0);
     const [opponent, setOpponent] = useState("")
+    const [gameStarted, setGameStarted] = useState(false)
+    const [rematchVote, setRematchVote] = useState(0)
     const winner = calculateWinner(board);
 
     const xIsNextRef = useRef(true);
     const isXRef = useRef(isX);
     const boardRef = useRef();
+    const rematchVoteRef = useRef(rematchVote)
 
     const joiner = useRef(false);
 
@@ -51,16 +55,47 @@ const TicTacToe = (props) => {
     }
 
     const handleClick = (i) => {
-        if ((isX && !xIsNext) || (!isX && xIsNext)) return;
-        const boardCopy = [...boardRef.current];
-        // If user click an occupied square or if game is won, return
-        if (winner || boardCopy[i]) return;
-        // Put an X or an O in the clicked square
-        boardCopy[i] = isXRef.current ? "X" : "O";
-        setBoard(boardCopy) 
-        setXisNext(!xIsNextRef.current)
-        handleTurn(i)
+        if (gameStarted) {
+            if ((isX && !xIsNext) || (!isX && xIsNext)) return;
+            const boardCopy = [...boardRef.current];
+            // If user click an occupied square or if game is won, return
+            if (winner || boardCopy[i]) return;
+            // Put an X or an O in the clicked square
+            boardCopy[i] = isXRef.current ? "X" : "O";
+            setBoard(boardCopy) 
+            setXisNext(!xIsNextRef.current)
+            handleTurn(i)
+        }
     };
+
+    const handleStartGame = () => {
+        setGameStarted(true)
+        setMarkerInfoHidden(false)
+        setGameStartDisable(true)
+
+        const start = {
+            user: props.user,
+            type: 'start',
+            isX: isXRef.current
+        }
+        sendChannel.send(JSON.stringify(start));
+    }
+
+    const handleRematchClick = () => {
+        setRematchVote(rematchVoteRef.current + 1)
+        setRematchDisable(true)
+        const data = {
+            user: props.user,
+            type: 'rematchVote',
+        }
+
+        if (receiveChannel.readyState === 'open') {
+            receiveChannel.send(JSON.stringify(data));
+        }
+        else if (sendChannel.readyState === 'open') {
+            sendChannel.send(JSON.stringify(data));
+        }
+    }
 
     useEffect(() => {
         boardRef.current = board;
@@ -74,13 +109,42 @@ const TicTacToe = (props) => {
         isXRef.current = isX
     }, [isX])
 
+    useEffect(() => {
+        if (winner != null && (winner.startsWith("Winner: ") || winner.startsWith("Tie"))) {
+            setRematchDisable(false)
+            setRematchVoteTotalHidden(false)
+        }
+    }, [winner])
+
+    useEffect(() => {
+        rematchVoteRef.current = rematchVote
+        if (rematchVote == 2) {
+            setBoard(Array(9).fill(null))
+            setGameStartDisable(false)
+            setGameStarted(false)
+            setMarkerInfoHidden(true)
+            setXisNext(true)
+            setRematchVote(0)
+            setRematchVoteTotalHidden(true)
+            if (!joiner.current) {
+                setIsX(Math.random() < 0.5 ? true: false)
+            }
+        }
+    }, [rematchVote])
+
     const [startDisable, setStartDisable] = useState(false);
     const [inviteDisable, setInviteDisable] = useState(true);
-    const [joinDisable, setJoinDisable] = useState(true);
+    const [joinDisable, setJoinDisable] = useState(false);
     const [quitDisable, setQuitDisable] = useState(true);
-    const [joinIdDisable, setJoinIdDisable] = useState(true);
+    const [joinIdDisable, setJoinIdDisable] = useState(false);
     const [joinInputId, setJoinInputId] = useState('');
     const [inviteInputId, setInviteInputId] = useState('');
+
+    const [gamestartDisable, setGameStartDisable] = useState(false)
+    const [rematchDisable, setRematchDisable] = useState(true)
+
+    const [markerInfoHidden, setMarkerInfoHidden] = useState(true)
+    const [rematchVoteTotalHidden, setRematchVoteTotalHidden] = useState(true)
 
     const [sentReceiveOpener, setSentReceiveOpener] = useState(false);
 
@@ -170,8 +234,14 @@ const TicTacToe = (props) => {
                 break;
             case 'end':
                 break;
+            case 'start':
+                handleReceiveStart(data)
+                break;
             case 'turn':
                 handleReceiveTurn(data)
+                break;
+            case 'rematchVote':
+                handleRematchVote(data)
                 break;
             default:
                 console.log("datachannel type error")
@@ -200,6 +270,18 @@ const TicTacToe = (props) => {
         setXisNext(!xIsNextRef.current);
     }
 
+    function handleReceiveStart(data) {
+        if (data.hasOwnProperty("isX")) {
+            setIsX(!data.isX)
+        }
+        setGameStarted(true)
+        setMarkerInfoHidden(false)
+    }
+
+    function handleRematchVote(data) {
+        setRematchVote(rematchVoteRef.current + 1)
+    }
+
     const onEnterPress = (e) => {
         if(e.keyCode === 13 && e.shiftKey === false) {
             e.preventDefault();
@@ -216,6 +298,8 @@ const TicTacToe = (props) => {
         setJoinDisable(false);
         setStartDisable(true);
         setQuitDisable(false);
+
+        await handleInvite()
     };
 
     // 2. Create an offer
@@ -226,8 +310,39 @@ const TicTacToe = (props) => {
     
     // 3. Answer the call with the unique ID
     const handleJoin = async () => {
+        setSendChannel(pc.createDataChannel("sendChannel"))
+        setQuitDisable(false);
+
         await v1Functions.handleJoin(joiner, joinInputId, pc, setReceiveChannel);
     }; 
+
+    const NoOppInfo = () => (
+        <div className='info'>
+            <div style={{paddingTop: "15px"}}>
+                <button ref={startButton} className='buttons' onClick={handleStart} disabled={startDisable}>Open Lobby</button> 
+                <h5 style={{paddingTop: "10px"}}>Invite Code</h5>
+                <input ref={inviteInput} value={inviteInputId} disabled/>
+            </div>
+            <div style={{paddingTop: "25px"}}>
+                <h5>Or Join Lobby</h5>
+                <input style={{marginBottom: "5px"}} ref={joinInput} placeholder="Enter Invite Code..." value={joinInputId} onChange={(e) => v1Functions.onJoinIdInput(setJoinInputId, e)} disabled={joinIdDisable}/>
+                <button ref={joinButton} className='buttons' onClick={handleJoin} disabled={joinDisable}>Join Lobby</button>
+            </div>
+        </div>
+    );
+
+    const WithOppInfo = () => (
+        <div className='info'>
+            <h5>Opponent: {opponent}</h5>
+            <h5 hidden={markerInfoHidden}>Your Marker: {opponent ? (isX ? "X" : "O") : ""}</h5>
+            <div>
+                <button style={{marginTop: "5px"}} className='buttons' hidden={joiner.current} disabled={gamestartDisable} onClick={handleStartGame}>Start Game</button>
+                <button style={{marginTop: "5px"}} className='buttons' disabled={rematchDisable} onClick={handleRematchClick}>Rematch</button>
+                <span hidden={rematchVoteTotalHidden}>{rematchVote}/2</span>
+                <button style={{marginTop: "5px"}} ref={quitButton} className='buttons' disabled={quitDisable} onClick={handleQuit} >Leave Lobby</button>
+            </div>
+        </div>
+    );
     
     return (
         <div className='window'>
@@ -240,14 +355,11 @@ const TicTacToe = (props) => {
                     <Square key={i} value={square} onClick={() => handleClick(i)} />
                 ))}
                 </div>
-                <div className='info'>
-                    <h5>Opponent: {opponent}</h5>
-                    <h5>Your Marker: {opponent ? (isX ? "X" : "O") : ""}</h5>
-                </div>
+                {opponent ? <WithOppInfo/> : <NoOppInfo/>}
             </div>
 
             <div>
-                <h3 style={{textAlign: "center"}}>
+                <h3 style={{textAlign: "center"}} hidden={markerInfoHidden}>
                     {/* please remove this ternary with something readable*/}
                     {opponent ? (winner ? winner : "Next Player: " + (xIsNext === true ? "X" : "O")) : ""}
                 </h3>
@@ -263,31 +375,6 @@ const TicTacToe = (props) => {
                     </form>
                 </div>
             </div>
-
-            <h3>1. Start Webcam</h3>
-            <button ref={startButton} className='buttons' onClick={handleStart} disabled={startDisable}>Start Game</button> 
-            <br/>
-
-            <div className='createorjoin'>
-                <div style={{padding: "2em"}}>
-                    <h3>2. Create a new Call</h3>
-                    <label>Send code to the receiver</label>
-                    <br/>
-                    <input ref={inviteInput} value={inviteInputId} disabled/>
-                    <button ref={inviteButton} className='buttons' onClick={handleInvite} disabled={inviteDisable}>Create Call</button>
-                </div>
-                <div style={{padding: "2em"}}>
-                    <h3>Or Join a Call</h3>
-                    <label>Answer the call by pasting code below</label>
-                    <br/>
-                    <input ref={joinInput} value={joinInputId} onChange={(e) => v1Functions.onJoinIdInput(setJoinInputId, e)} disabled={joinIdDisable}/>
-                    <button ref={joinButton} className='buttons' onClick={handleJoin} disabled={joinDisable}>Answer</button>
-                </div>
-            </div>
-
-            <br/>
-            <h3>3. Hangup</h3>
-            <button ref={quitButton} className='buttons' disabled={quitDisable} onClick={handleQuit} >Hangup</button>
         </div>
     );
 };
