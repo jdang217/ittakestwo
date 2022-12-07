@@ -34,7 +34,7 @@ const Wordle = () => {
     function todaysPosition() {
         var firstDay = moment([2022, 11, 6])
         var currentDay = moment()
-        var dayDifference = firstDay.diff(currentDay, "days")
+        var dayDifference = currentDay.diff(firstDay, "days")
 
         if (dayDifference >= MAX_WORDS) {
             dayDifference -= MAX_WORDS
@@ -156,7 +156,6 @@ const Wordle = () => {
 
     useEffect(() => {
         numGuessesRef.current = numGuesses
-        console.log("guesses: " + numGuessesRef.current)
     }, [numGuesses])
 
     useEffect(() => {
