@@ -97,6 +97,12 @@ const Games = () => {
         },
         {
             url: TicTacToeImage,
+            title: 'Wordle',
+            width: '50%',
+            redirect: 'wordle',
+        },
+        {
+            url: TicTacToeImage,
             title: '1v1 Template',
             width: '50%',
             redirect: 'template',

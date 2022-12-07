@@ -1,0 +1,18 @@
+.wordlesquare {
+    background: black;
+    border: 2px solid grey;
+    font-size: 30px;
+    font-weight: 800;
+    color: white;
+    cursor: pointer;
+    outline: none;
+}
+
+.wordleboard {
+    width: 400px;
+    height: 500px;
+    margin: 0 auto;
+    display: grid;
+    grid-template: repeat(6, 1fr) / repeat(5, 1fr);
+    grid-area: board;
+}

@@ -1,12 +1,10 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Square from './square';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import moment from 'moment';
 import _1v1Functions from '../1v1Functions';
 
 import "./tictactoe.css"
-import { containerClasses } from '@mui/material';
 
 const TicTacToe = (props) => {
 
