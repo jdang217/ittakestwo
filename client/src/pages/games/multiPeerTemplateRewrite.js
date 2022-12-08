@@ -1,6 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import { Prompt } from 'react-router'
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import moment from 'moment';
 import MultiPeerFunctions from './multiPeerFunctions';
@@ -9,7 +7,6 @@ const MultiPeerTemplateRewrite = (props) => {
 
     const multiPeerFunctions = new MultiPeerFunctions();
 
-    const [update, setUpdate] = useState(0);
     const [playerList, setPlayerList] = useState([]);
 
     const joiner = useRef(false);   //is current client a joiner or host
@@ -38,6 +35,7 @@ const MultiPeerTemplateRewrite = (props) => {
     const code = useRef();      //lobby code
     const clients = useRef();   //client channel reference
     const players = useRef();   //players reference
+    const chatBoxRef = useRef() //chatbox history
     
     const [pcs, setPcs] = useState([]); //peer connections
     const peers = useRef();
@@ -92,8 +90,8 @@ const MultiPeerTemplateRewrite = (props) => {
         clients.current = clientChannels
         if (clientChannels.length > 0) {
             const newestConnection = clientChannels[clientChannels.length - 1]
-            newestConnection.onopen = (e) => multiPeerFunctions.handleClientChannelStatusChange(clientChannels, joiner, props.user, players, clients, setPcs, setChatBox, setPlayerList, e);
-            newestConnection.onclose = (e) => multiPeerFunctions.handleClientChannelStatusChange(clientChannels, joiner, props.user, players, clients, setPcs, setChatBox, setPlayerList, e);
+            newestConnection.onopen = (e) => multiPeerFunctions.handleClientChannelStatusChange(clientChannels, joiner, props.user, players, clients, setPcs, setChatBox, chatBoxRef, setPlayerList, e);
+            newestConnection.onclose = (e) => multiPeerFunctions.handleClientChannelStatusChange(clientChannels, joiner, props.user, players, clients, setPcs, setChatBox, chatBoxRef, setPlayerList, e);
             newestConnection.onmessage = handleReceiveMessage;
         }
     }, [clientChannels])
@@ -124,6 +122,7 @@ const MultiPeerTemplateRewrite = (props) => {
     //make sure chat box stays scrolled to the bottom
     useEffect(() => {
         chat.current.scrollTop = chat.current.scrollHeight;
+        chatBoxRef.current = chatBox
     }, [chatBox])
 
     //HTML elements
@@ -143,49 +142,14 @@ const MultiPeerTemplateRewrite = (props) => {
 
     //handle recieving mesages from clients
     const handleReceiveMessage = (event) => {
-        setUpdate(update => update + 1)
         var data = JSON.parse(event.data)
         const sourceChannel = event.srcElement.label
         switch(data.type) {
             case 'opener':
-                var opener = data.timestamp + " SERVER: User " + (data.user ? data.user: "GUEST") + " has connected!\n";
-                setChatBox(prev => prev + opener);
-                if (joiner.current === false) {
-                    const player = {
-                        user: data.user ? data.user: "GUEST",
-                        channel: sourceChannel,
-                    }
-                    setPlayerList(prevPlayers => [...prevPlayers, player])
-
-                    const openerForClients = {
-                        user: data.user ? data.user: "GUEST",
-                        timestamp: data.timestamp,
-                        type: 'opener',
-                    }
-
-                    clients.current.forEach((channel) => {
-                        if (channel.readyState === 'open' && channel.label !== sourceChannel) {
-                            channel.send(JSON.stringify(openerForClients));
-                        }
-                    })
-                }
+                multiPeerFunctions.handleReceiveOpener(data, setChatBox, chatBoxRef, joiner, sourceChannel, setPlayerList, clients)
                 break;
             case 'chat':
-                var chatMessage = data.timestamp + " " + data.user + ": " + data.message + "\n";
-                setChatBox(prev => prev + chatMessage);
-                if (joiner.current === false) {
-                    const messageForClients = {
-                        user: data.user ? data.user: "GUEST",
-                        timestamp: data.timestamp,
-                        type: 'chat',
-                        message: data.message,
-                    }
-                    clients.current.forEach((channel) => {
-                        if (channel.readyState === 'open' && channel.label !== sourceChannel) {
-                            channel.send(JSON.stringify(messageForClients));
-                        }
-                    })
-                }
+                multiPeerFunctions.handleReceiveChat(data, setChatBox, chatBoxRef, joiner, clients, sourceChannel)
                 break;
             case 'players':
                 setPlayerList(data.message)
@@ -199,7 +163,7 @@ const MultiPeerTemplateRewrite = (props) => {
     const onEnterPress = (e) => {
         if(e.keyCode === 13 && e.shiftKey === false) {
             e.preventDefault();
-            multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, setMessageBox, e);
+            multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, chatBoxRef, setMessageBox, e);
         }
     }
 
@@ -263,10 +227,10 @@ const MultiPeerTemplateRewrite = (props) => {
             <div className='chat'>
                 <textarea ref={chat} name='chatBox' className='chatBox' type="text" placeholder='Waiting for connection...' value={chatBox} disabled></textarea>
                 <div>
-                    <form onSubmit={(e) => multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, setMessageBox, e)} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <form onSubmit={(e) => multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, chatBoxRef, setMessageBox, e)} style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                         <textarea ref={sendChat} name='sendChat' className='sendChat' type="text" placeholder='Enter message' value={messageBox} onChange={(e) => multiPeerFunctions.handleMessageChange(setMessageBox, e)} onKeyDown={onEnterPress}></textarea>
                         
-                        <input type="button" value="Submit" onClick={(e) => multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, setMessageBox, e)} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
+                        <input type="button" value="Submit" onClick={(e) => multiPeerFunctions.handleChatSubmit(props.user, messageBox, hostChannel, clientChannels, setChatBox, chatBoxRef, setMessageBox, e)} style={{height: '2em', maxHeight: '2em', fontSize: '16px', width: '4rem'}}/>
                     </form>
                 </div>
             </div>

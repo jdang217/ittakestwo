@@ -49,7 +49,7 @@ class MultiPeerFunctions {
     }
 
     //handle status changes from connections
-    handleClientChannelStatusChange = (clientChannels, joiner, user, players, clients, setPcs, setChatBox, setPlayerList, event) => {
+    handleClientChannelStatusChange = (clientChannels, joiner, user, players, clients, setPcs, setChatBox, chatBoxRef, setPlayerList, event) => {
         //identify the client channel 
         var sourceChannel; 
         clientChannels.forEach((channel) => {
@@ -83,7 +83,7 @@ class MultiPeerFunctions {
             if (joiner.current === true) {
                 var datetime = moment(today).format("(M/D/YY-h:mma)");
                 const dcMessage = datetime + " SERVER: Host has disconnected. Please join another lobby.\n"
-                setChatBox(prev => prev + dcMessage);
+                setChatBox(chatBoxRef.current + dcMessage);
             }
             //client leaving 
             else {
@@ -114,7 +114,7 @@ class MultiPeerFunctions {
                 
                 //sent to self
                 const dcMessage = datetime + " SERVER: " + message
-                setChatBox(prev => prev + dcMessage);
+                setChatBox(chatBoxRef.current + dcMessage);
 
                 //adjust player list
                 setPlayerList(players.current.filter(player => player.user !== leaver)); 
@@ -143,7 +143,7 @@ class MultiPeerFunctions {
     }
 
     //handle user sending a chat message
-    handleChatSubmit = (user, messageBox, hostChannel, clientChannels, setChatBox, setMessageBox, event) => {
+    handleChatSubmit = (user, messageBox, hostChannel, clientChannels, setChatBox, chatBoxRef, setMessageBox, event) => {
         var today = new Date();
         var datetime = moment(today).format("(M/D/YY-h:mma)");
 
@@ -166,10 +166,53 @@ class MultiPeerFunctions {
                 })
             }
             var message = chatMessage.timestamp + " " + chatMessage.user + ": " + chatMessage.message + "\n";
-            setChatBox(prev => prev + message);
+            setChatBox(chatBoxRef.current + message);
             setMessageBox("");
         }
     }
+
+    handleReceiveOpener = (data, setChatBox, chatBoxRef, joiner, sourceChannel, setPlayerList, clients) => {
+        var opener = data.timestamp + " SERVER: User " + (data.user ? data.user: "GUEST") + " has connected!\n";
+        setChatBox(chatBoxRef.current + opener);
+        if (joiner.current === false) {
+            const player = {
+                user: data.user ? data.user: "GUEST",
+                channel: sourceChannel,
+            }
+            setPlayerList(prevPlayers => [...prevPlayers, player])
+
+            const openerForClients = {
+                user: data.user ? data.user: "GUEST",
+                timestamp: data.timestamp,
+                type: 'opener',
+            }
+
+            clients.current.forEach((channel) => {
+                if (channel.readyState === 'open' && channel.label !== sourceChannel) {
+                    channel.send(JSON.stringify(openerForClients));
+                }
+            })
+        }
+    }
+
+    handleReceiveChat = (data, setChatBox, chatBoxRef, joiner, clients, sourceChannel) => {
+        var chatMessage = data.timestamp + " " + data.user + ": " + data.message + "\n";
+        setChatBox(chatBoxRef.current + chatMessage);
+        if (joiner.current === false) {
+            const messageForClients = {
+                user: data.user ? data.user: "GUEST",
+                timestamp: data.timestamp,
+                type: 'chat',
+                message: data.message,
+            }
+            clients.current.forEach((channel) => {
+                if (channel.readyState === 'open' && channel.label !== sourceChannel) {
+                    channel.send(JSON.stringify(messageForClients));
+                }
+            })
+        }
+    }
+
 
     makeid() {
         var result = '';

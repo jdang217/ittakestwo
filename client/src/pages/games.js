@@ -7,6 +7,9 @@ import Typography from '@mui/material/Typography';
 
 import FaceChatImage from './games/gameImages/FaceChatImage.jpg';
 import TicTacToeImage from './games/gameImages/TicTacToeImage.png';
+import WordleImage from './games/gameImages/WordleImage.png';
+import PokerImage from './games/gameImages/PokerImage.jpeg'
+import SettingsImage from './games/gameImages/SettingsImage.png'
 
 const Games = () => {
 
@@ -62,7 +65,7 @@ const Games = () => {
         top: 0,
         bottom: 0,
         backgroundColor: theme.palette.common.black,
-        opacity: 0.4,
+        opacity: 0.5,
         transition: theme.transitions.create('opacity'),
     }));
     
@@ -90,25 +93,31 @@ const Games = () => {
             redirect: 'tictactoe',
         },
         {
-            url: TicTacToeImage,
+            url: PokerImage,
             title: 'Poker',
             width: '50%',
             redirect: 'poker',
         },
         {
-            url: TicTacToeImage,
+            url: WordleImage,
             title: 'Wordle',
             width: '50%',
             redirect: 'wordle',
         },
         {
-            url: TicTacToeImage,
+            url: SettingsImage,
+            title: 'One',
+            width: '50%',
+            redirect: 'one',
+        },
+        {
+            url: SettingsImage,
             title: '1v1 Template',
             width: '50%',
             redirect: 'template',
         },
         {
-            url: TicTacToeImage,
+            url: SettingsImage,
             title: 'Multi Peer Template Rewrite',
             width: '50%',
             redirect: 'multi-peer-template-rewrite',
