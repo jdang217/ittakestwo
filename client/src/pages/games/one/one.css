@@ -1,0 +1,26 @@
+.onegame {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 5% 25% 5% 30% 5% 25% 5%;
+    grid-template-rows: 250px;
+    grid-template-areas:
+        ". . . board . info ."
+}
+
+.oneboard {
+    border: 4px solid darkblue;
+    border-radius: 10px;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
+    display: grid;
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-area: board;
+}
+
+.oneinfo {
+    border: 2px solid black;
+    grid-area: info;
+    padding-left: 4px;
+    height: 250px;
+}
