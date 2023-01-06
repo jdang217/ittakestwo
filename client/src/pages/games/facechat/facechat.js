@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react';
-import firebase from 'firebase/app';
 import 'firebase/firestore';
 import moment from 'moment';
 import _1v1Functions from '../1v1Functions';

@@ -117,11 +117,18 @@ const Wordle = () => {
         }
         //enter
         else if (keyCode == 13) {
-            if (currentSquareRef.current == (numGuessesRef.current + 1) * 5 && currentSquareRef.current != 30) {
+            console.log(currentSquareRef.current)
+            console.log((numGuessesRef.current + 1) * 5)
+            console.log(currentSquareRef.current)
+            if (currentSquareRef.current == (numGuessesRef.current + 1) * 5 && currentSquareRef.current <= 30) {
                 if (checkValidWord()) {
                     checkForCorrectness()
                     setNumGuesses(numGuessesRef.current + 1)
                 }
+            }
+            //if player gets all guesses wrong
+            if (numGuessesRef.current == 5) {
+                setGameOver(true)
             }
         }
 
