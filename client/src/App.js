@@ -32,23 +32,25 @@ class App extends React.Component {
   }
 
   login = () => {
-    axios({
-      method: "get",
-      url: "/api/signin",
-      data: "",
-      headers: { 
-        "Content-Type": "text/plain",
-        "x-auth-token": localStorage.getItem("token")
-      },
-    })
-    .then((response) => {
-      //handle success
-      this.setState({ isAuth: true, user: response.data.username });
-    })
-    .catch((response) => {
-      //handle error
-      console.log(response);
-    });
+    if (localStorage.getItem("token") != null) {
+      axios({
+        method: "get",
+        url: "/api/signin",
+        data: "",
+        headers: { 
+          "Content-Type": "text/plain",
+          "x-auth-token": localStorage.getItem("token")
+        },
+      })
+      .then((response) => {
+        //handle success
+        this.setState({ isAuth: true, user: response.data.username });
+      })
+      .catch((response) => {
+        //handle error
+        console.log(response);
+      });
+    }
   }
 
   logout = () => {
