@@ -59,7 +59,7 @@ class MultiPeerFunctions {
         })
         
         //if client is joining send opener
-        if (sourceChannel.readyState === 'open' && joiner.current === false) {
+        if (sourceChannel.readyState === 'open' && !joiner.current) {
             var today = new Date();
             var datetime = moment(today).format("(M/D/YY-h:mma)");
             const opener = {
@@ -73,7 +73,7 @@ class MultiPeerFunctions {
         }
 
         //if client is joining add as peer
-        if (event.type === 'open' && joiner.current === false) {
+        if (event.type === 'open' && !joiner.current) {
             this.addRTCPeer(setPcs)
         }
 
@@ -174,7 +174,7 @@ class MultiPeerFunctions {
     handleReceiveOpener = (data, setChatBox, chatBoxRef, joiner, sourceChannel, setPlayerList, clients) => {
         var opener = data.timestamp + " SERVER: User " + (data.user ? data.user: "GUEST") + " has connected!\n";
         setChatBox(chatBoxRef.current + opener);
-        if (joiner.current === false) {
+        if (!joiner.current) {
             const player = {
                 user: data.user ? data.user: "GUEST",
                 channel: sourceChannel,
@@ -198,7 +198,7 @@ class MultiPeerFunctions {
     handleReceiveChat = (data, setChatBox, chatBoxRef, joiner, clients, sourceChannel) => {
         var chatMessage = data.timestamp + " " + data.user + ": " + data.message + "\n";
         setChatBox(chatBoxRef.current + chatMessage);
-        if (joiner.current === false) {
+        if (!joiner.current) {
             const messageForClients = {
                 user: data.user ? data.user: "GUEST",
                 timestamp: data.timestamp,

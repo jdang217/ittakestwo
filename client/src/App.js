@@ -22,7 +22,9 @@ import MultiPeerTemplateRewrite from "./pages/games/multiPeerTemplateRewrite";
 import Poker from "./pages/games/poker/poker";
 import Wordle from "./pages/games/wordle/wordle";
 import One from "./pages/games/one/one";
+import Friends from "./components/profile/friends";
 import axios from "axios";
+import EditProfile from "./components/profile/editprofile";
 
 
 class App extends React.Component {
@@ -78,7 +80,9 @@ class App extends React.Component {
             <Route exact path='/sign-up' element={<SignUp/>} />
             <Route exact path='/sign-in' element={<SignIn isLoggedIn={isAuth} login={this.login}/>} />
             <Route exact path='/sign-out' element={<SignOut isLoggedIn={isAuth} logout={this.logout}/>} />
-            <Route exact path='/profile/:user' element={<Profile/>} />
+            <Route exact path='/profile/:user' element={<Profile user = {user} />} />
+            <Route exact path='/profile/:user/settings' element={<EditProfile user = {user} logout={this.logout} />} />
+            <Route exact path='/profile/:user/friends' element={<Friends user = {user} />} />
             <Route exact path='/facechat' element={<FaceChat user={user} />} />
             <Route exact path='/tictactoe' element={<TicTacToe user={user} />} />
             <Route exact path='/template' element={<Template user={user} />} />
@@ -86,6 +90,7 @@ class App extends React.Component {
             <Route exact path='/poker' element={<Poker user={user} />} />
             <Route exact path='/wordle' element={<Wordle user={user} />} />
             <Route exact path='/one' element={<One user={user} />} />
+            <Route exact path='*' element={<Home />} />
           </Routes>
         </Router> 
       </div>

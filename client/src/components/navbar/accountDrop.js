@@ -5,6 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
+import GroupsIcon from '@mui/icons-material/Groups';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
@@ -30,7 +31,11 @@ const AccountMenu = (props) => {
   }
 
   const handleSettings = (event) => {
-    alert('Settings clicked');
+    navigate("/profile/" + props.user + "/settings");
+  }
+
+  const handleFriends = (event) => {
+    navigate("/profile/" + props.user + "/friends");
   }
 
   const handleLogout = (event) => {
@@ -100,6 +105,12 @@ const AccountMenu = (props) => {
           <Avatar /> {props.user}
         </MenuItem>
         <Divider />
+        <MenuItem onClick={handleFriends}>
+          <ListItemIcon>
+            <GroupsIcon fontSize="small" />
+          </ListItemIcon>
+          Friends
+        </MenuItem>
         <MenuItem onClick={handleSettings}>
           <ListItemIcon>
             <Settings fontSize="small" />

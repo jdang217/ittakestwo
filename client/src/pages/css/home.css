@@ -1,0 +1,8 @@
+.home-background {
+    display: flex;
+    justify-content: center;
+    align-items: right;
+    height: 100vh;
+    background: rgb(47,82,166);
+    background: linear-gradient(180deg, rgba(47,82,166,1) 0%, rgba(212,148,220,1) 63%, rgba(119,77,203,1) 100%);
+}

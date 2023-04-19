@@ -1,5 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch&family=Montserrat&display=swap');
+
 .window {
     overflow: auto;
+    background: rgb(47,82,166);
+    background: linear-gradient(180deg, rgba(47,82,166,1) 0%, rgba(212,148,220,1) 100%);
 }
 
 .title {
@@ -24,6 +29,8 @@
     top: 160px;
     height: 125px;
     width: 90vw;
+    background-color: transparent;
+    border: solid #774DCB;
 }
 
 .submit {
@@ -53,7 +60,7 @@
     justify-content: 'center';
     align-items: 'center';
     border-radius: 25px;
-    border: 2px solid #63D471;
+    border: 2px solid #774DCB;
     left: 5vw;
     /*height: 125px;*/
     min-height: 125px;
@@ -67,6 +74,8 @@
     justify-content: space-between;
     text-indent: 2vw;
     max-width: 88vw;
+    color: #FFFFFF;
+    font-family: 'Chakra Petch', sans-serif;
 }
 
 .posttext {
@@ -75,6 +84,8 @@
     /*text-indent: 2vw;*/
     max-width: 88vw;
     overflow-wrap: break-word;
+    color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .checkboxcontainer {
@@ -99,7 +110,7 @@
     /*justify-content: center;*/
     align-items: center;
     border-radius: 25px;
-    border: 2px solid #63D471;
+    border: 2px solid #774DCB;
     /*left: 5vw;*/
     /*height: 125px;*/
     min-height: 125px;
@@ -112,6 +123,8 @@
     display: flex;
     max-width: 28vw;
     font-size: 20px;
+    color: #FFFFFF;
+    font-family: 'Chakra Petch', sans-serif;
 }
 
 .checkboxtext {
@@ -133,6 +146,8 @@
     border: transparent;
     resize: none;
     overflow: hidden;
+    color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .checkboxsubmit {

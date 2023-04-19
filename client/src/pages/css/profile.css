@@ -1,0 +1,139 @@
+.profile-window {
+    display: grid;
+    grid-template-columns: 5vw 90vw 5vw;
+    grid-template-rows: max-content;
+    grid-template-areas: 
+    ". profileinfo ."
+    ". tagsandguild ."
+    ". achievementsandstats .";
+    background-color: #2F52A6;
+    height: 100vh;
+    font-family: 'Chakra Petch', sans-serif;
+}
+
+.profile-profileinfo {
+    background: rgb(140,204,255);
+    background: linear-gradient(160deg, rgba(140,204,255,1) 0%, rgba(212,148,220,1) 100%);
+    grid-area: profileinfo;
+    border-radius: 25px;
+    margin-top: 40px;
+
+    display: grid;
+    grid-template-columns: 2% 20% 2% 23.5% 5% 9% 10% 4.5% 10% 9% 5%;
+    grid-template-rows: 30px 20px 15px 25px 25px 35px;
+    grid-template-areas: 
+    ". profileicon . username . numfriends numfriends . profileage profileage ."
+    ". profileicon . username . numfriends numfriends . profileage profileage ."
+    ". profileicon . . . . . . . . ."
+    ". profileicon . lastseen . status status status status status ."
+    ". profileicon . addfriend . status status status status status ."
+    ". profileicon . . . status status status status status ."
+    ;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.profile-tagsandguild {
+    background: rgb(140,204,255);
+    background: linear-gradient(160deg, rgba(140,204,255,1) 0%, rgba(212,148,220,1) 100%);
+    grid-area: tagsandguild;
+    border-radius: 25px;
+    margin-top: 20px;
+}
+
+.profile-achievementsandstats {
+    background: rgb(140,204,255);
+    background: linear-gradient(160deg, rgba(140,204,255,1) 0%, rgba(212,148,220,1) 100%);
+    grid-area: achievementsandstats;
+    border-radius: 25px;
+    margin-top: 20px;
+    margin-bottom: 40px;
+}
+
+.profile-icon {
+    grid-area: profileicon;
+    justify-self: center;
+    align-self: center;
+    border: 2px solid white;
+}
+
+.profile-username {
+    grid-area: username;
+    text-align: right;
+    font-size: 25px;
+    direction: rtl;
+    overflow-wrap: break-word;
+    line-height: 2;
+    color: #FFFFFF;
+}
+
+.profile-lastseen {
+    grid-area: lastseen;
+    text-align: right;
+    color: #FFFFFF;
+    font-style: italic;
+}
+
+.profile-addfriend {
+    grid-area: addfriend;
+    display: flex;
+    justify-content: right;
+}
+
+.profile-addfriendbutton {
+   color: #774DCB;
+}
+
+.profile-editprofile {
+    grid-area: addfriend;
+    display: flex;
+    justify-content: right;
+}
+
+.profile-editprofilebutton {
+   color: #774DCB;
+}
+
+.profile-numfriends {
+    grid-area: numfriends;
+    border: 2px solid #774DCB;
+    border-radius: 15px;
+    color: #FFFFFF;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.profile-profileage {
+    grid-area: profileage;
+    border: 2px solid #774DCB;
+    border-radius: 15px;
+    color: #FFFFFF;
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    text-align: center;
+    font-size: 14px;
+}
+
+.profile-status {
+    grid-area: status;
+    border: 2px solid #774DCB;
+    border-radius: 15px;
+    color: #FFFFFF;
+    padding-left: 10px;
+    padding-right: 10px;
+    overflow-wrap: break-word;
+    text-align: center;
+}
+
+.profile-profileerror {
+    background-color: #2F52A6;
+    height: 100vh;
+    text-align: center;
+}

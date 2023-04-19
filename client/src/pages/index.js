@@ -1,15 +1,9 @@
 import React from 'react';
+import "./css/home.css";
 
 const Home = () => {
 return (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'Right',
-                height: '100vh'
-            }}
-        >
+        <div className='home-background'>
             <h1>Welcome to ItTakesTwo!</h1>
         </div>
     );

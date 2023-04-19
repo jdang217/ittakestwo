@@ -214,7 +214,7 @@ const Post = (props) => (
     <div className='postbox'>
         <div className='posttitle'>
             <label>
-                Post By {props.username} 
+                Post By: {props.username} 
             </label>
 
             <label>

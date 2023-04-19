@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.bed3b0bd.css",
-    "main.js": "/static/js/main.9d8b59ee.js",
+    "main.css": "/static/css/main.12bd5fb0.css",
+    "main.js": "/static/js/main.6f756558.js",
     "static/media/TicTacToeImage.png": "/static/media/TicTacToeImage.e5eafb42f28083364a27.png",
     "static/media/pokertable.png": "/static/media/pokertable.30466f6c661f970228ba.png",
     "static/media/PokerImage.jpeg": "/static/media/PokerImage.77f54d9eaa9b977aa1ff.jpeg",
@@ -14,12 +14,13 @@
     "static/media/diamond.png": "/static/media/diamond.0bdbea5826dde5a4b8fe.png",
     "static/media/spade.png": "/static/media/spade.85c88aa11970415643af.png",
     "static/media/WordleImage.png": "/static/media/WordleImage.2e4d28bb0c7c601312a8.png",
+    "static/media/ITTLogo.png": "/static/media/ITTLogo.16940b17d73fba5d7799.png",
     "index.html": "/index.html",
-    "main.bed3b0bd.css.map": "/static/css/main.bed3b0bd.css.map",
-    "main.9d8b59ee.js.map": "/static/js/main.9d8b59ee.js.map"
+    "main.12bd5fb0.css.map": "/static/css/main.12bd5fb0.css.map",
+    "main.6f756558.js.map": "/static/js/main.6f756558.js.map"
   },
   "entrypoints": [
-    "static/css/main.bed3b0bd.css",
-    "static/js/main.9d8b59ee.js"
+    "static/css/main.12bd5fb0.css",
+    "static/js/main.6f756558.js"
   ]
 }

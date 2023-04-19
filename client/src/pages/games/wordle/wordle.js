@@ -53,7 +53,7 @@ const Wordle = () => {
 
     function checkForCorrectness() {
         var enteredWord = ""
-        var wordCopy = wordRef.current
+        var wordCopy = wordRef.current.toUpperCase()
         var checked = []
         for (var i = 0; i < 5; i++) {
             enteredWord += boardRef.current[(numGuessesRef.current * 5) + i]
@@ -61,7 +61,7 @@ const Wordle = () => {
 
         for (var i = 0; i < 5; i ++) {
             var currentLetter = enteredWord.charAt(i)
-            if (currentLetter.toLowerCase() == wordCopy.charAt(i)) {
+            if (currentLetter == wordCopy.charAt(i)) {
                 checked.push(i)
                 document.getElementById("wordlesquare" + ((numGuessesRef.current * 5) + i)).style.backgroundColor = "green"
             }
@@ -70,7 +70,7 @@ const Wordle = () => {
             setGameOver(true)
         }
 
-        for (var i = 0; i < checked.length; i++) {
+        for (var i = checked.length - 1; i >= 0; i--) {
             wordCopy = wordCopy.slice(0, checked[i]) + wordCopy.slice(checked[i] + 1);
         }
 
@@ -79,8 +79,8 @@ const Wordle = () => {
             if (checked.includes(i)) {
                 continue
             }
-            if (wordCopy.includes(currentLetter.toLowerCase())) {
-                wordCopy = wordCopy.replace(currentLetter.toLowerCase(), "")
+            if (wordCopy.includes(currentLetter)) {
+                wordCopy = wordCopy.replace(currentLetter, "")
                 document.getElementById("wordlesquare" + ((numGuessesRef.current * 5) + i)).style.backgroundColor = "#b59f3b"
             }
             else {
@@ -117,9 +117,6 @@ const Wordle = () => {
         }
         //enter
         else if (keyCode == 13) {
-            console.log(currentSquareRef.current)
-            console.log((numGuessesRef.current + 1) * 5)
-            console.log(currentSquareRef.current)
             if (currentSquareRef.current == (numGuessesRef.current + 1) * 5 && currentSquareRef.current <= 30) {
                 if (checkValidWord()) {
                     checkForCorrectness()
