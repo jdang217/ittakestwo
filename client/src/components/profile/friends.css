@@ -1,0 +1,116 @@
+.friends-window {
+    background-color: #2F52A6;
+    /*background: linear-gradient(180deg, rgba(47,82,166,1) 0%, rgba(119,77,203,1) 100%);*/
+    height: min-content;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Chakra Petch', sans-serif;
+    align-items: center;
+    padding: 30px;
+}
+
+.friends-requests {
+    background-color: #774DCB;
+    border-radius: 10px;
+    overflow-x: scroll;
+    max-height: 320px;
+    width: 90vw;
+}
+
+.friends-title {
+    text-align: center;
+    color: white
+}
+
+.friends-requeststitle {
+    color: white;
+    font-size: 25px;
+    padding-left: 30px;
+}
+
+.friends-icon {
+    grid-area: profileicon;
+    justify-self: center;
+    align-self: center;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.friends-requestsicons {
+    display: flex;
+}
+
+.friends-request {
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 10px;
+    max-width: 250px;
+    display: grid;
+    grid-template-columns: 49% 2% 49%;
+    grid-template-rows: 68% 17% 5% 10%;
+    grid-template-areas: 
+    "profileicon profileicon profileicon"
+    "username username username"
+    ". . ."
+    "accept . reject";
+}
+
+.friends-username {
+    grid-area: username;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.friends-accept {
+    grid-area: accept;
+}
+
+.friends-reject {
+    grid-area: reject;
+}
+
+.friends-friends {
+    display: grid;
+    width: 90vw;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+}
+
+.friends-friend {
+    max-width: 170px;
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+    grid-template-rows: 75% 10% 5% 10%;
+    grid-template-areas: 
+    "friendicon friendicon friendicon"
+    "friendusername friendusername friendusername"
+    ". . ."
+    ". unfriend .";
+    padding-top: 30px;
+    margin: auto;
+}
+
+.friends-friendicon {
+    grid-area: friendicon;
+    justify-self: center;
+    align-self: center;
+    border: 2px solid white;
+    cursor: pointer;
+}
+
+.friends-friendusername {
+    grid-area: friendusername;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+}
+
+.friends-unfriend {
+    grid-area: unfriend;
+}

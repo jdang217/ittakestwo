@@ -24,3 +24,31 @@
     padding-left: 4px;
     height: 250px;
 }
+
+.one-window {
+    overflow: auto;
+    background: rgb(47,82,166);
+    background: linear-gradient(180deg, rgba(47,82,166,1) 0%, rgba(212,148,220,1) 100%);
+}
+
+.one-menuandgame {
+    width: calc(80vw + 4rem);
+    margin: auto;
+    display: grid;
+    grid-template-columns: 27% 3% 70%;
+    grid-template-rows: auto;
+    grid-template-areas: 
+        "playerlist . lmenu";
+}
+
+.one-menu {
+    background: rgb(140,204,255);
+    border-radius: 25px;
+    grid-area: lmenu;
+}
+
+.one-playerlist {
+    background: rgb(140,204,255);
+    border-radius: 25px;
+    grid-area: playerlist;
+}

@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 //const auth = require('./middleware/auth');
 
 var app = express();
+require('dotenv').config()
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -31,6 +32,9 @@ app.all('/api/checklist', require('./routes/devblog/checklist.js'))
 
 //profile
 app.all('/api/profile/:user', require('./routes/userProfile/profile'))
+app.all('/api/profile/:user/:friend', require('./routes/userProfile/profile'))
+app.all('/api/profile/:user/:friend/request', require('./routes/userProfile/profile'))
+app.all('/api/profile/:user/:friend/unfriend', require('./routes/userProfile/profile'))
 
 app.get("*", (req, res) => { //our GET route needs to point to the index.html in our build
     res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));

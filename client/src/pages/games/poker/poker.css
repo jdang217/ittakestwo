@@ -1,7 +1,7 @@
 .tableContainer {
     position: relative;
     width: 1400px;
-    height: 560px;
+    height: 600px;
     margin: auto;
 }
 
@@ -20,6 +20,54 @@
     left: 480px;
     display: flex;
     gap: 10px;
+}
+
+.bet {
+    position: absolute;
+    background: yellow;
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.bet1 {
+    top: 64%;
+    left: 650px;
+}
+
+.bet2 {
+    top: 53%;
+    left: 290px;
+}
+
+.bet3 {
+    top: 32%;
+    left: 290px;
+}
+
+.bet4 {
+    top: 23%;
+    left: 465px;
+}
+
+.bet5 {
+    top: 23%;
+    left: 650px;
+}
+
+.bet6 {
+    top: 23%;
+    left: 835px;
+}
+
+.bet7 {
+    top: 32%;
+    left: 1010px;
+}
+
+.bet8 {
+    top: 53%;
+    left: 1010px;
 }
 
 .hand{

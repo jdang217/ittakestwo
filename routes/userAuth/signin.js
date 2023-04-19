@@ -5,7 +5,7 @@ var multiparty = require('multiparty');
 const jwt = require("jsonwebtoken")
 const User = require("../../models/user.js");
 const bcrypt = require("bcryptjs");
-
+const moment = require("moment");
 const oneDay = 86400;
 
 const auth = require('../../middleware/auth.js');
@@ -66,7 +66,14 @@ router.get('/api/signin', auth, (req, res, next) => {
 	else {
 		User.findById(req.user.id)
 			.select('-password')
-			.then(user => res.json(user));
+			.then(user => {
+				User.findOneAndUpdate({username: user.username}, {lastSeen: moment().toDate()}, {new: true}, function(err, doc){
+					if (err) {
+						console.log("Something wrong when updating last seen!");
+					}
+				})
+				res.json(user)
+			});
 	}
 });
 

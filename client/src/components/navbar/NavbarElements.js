@@ -6,7 +6,7 @@ export const Nav = styled.nav`
     position: -webkit-sticky;
     position: sticky;
     top: 0;
-    background: #63D471;
+    background: #2F52A6;
     height: 85px;
     display: flex;
     justify-content: space-between;
@@ -17,7 +17,7 @@ export const Nav = styled.nav`
 `;
 
 export const NavLink = styled(Link)`
-    color: #808080;
+    color: #FFFFFF;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -25,7 +25,10 @@ export const NavLink = styled(Link)`
     height: 100%;
     cursor: pointer;
     &.active {
-        color: #000000;
+        color: #774DCB;
+    }
+    &:hover {
+        color: #D494DC;
     }
 `;
 
@@ -100,7 +103,7 @@ export const NavBtnLink = styled(Link)`
     &:hover {
         transition: all 0.2s ease-in-out;
         background: #fff;
-        color: #808080;
+        color: #D494DC;
     }
 `;
 

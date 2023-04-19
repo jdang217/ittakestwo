@@ -10,6 +10,7 @@ import {
 } from './NavbarElements';
 
 import AccountMenu from './accountDrop'
+import logo from '../../ITTLogo.png'
 
 const Navbar = (props) => {
 
@@ -25,7 +26,7 @@ const Navbar = (props) => {
 
 				<NavMenu>
 					<NavLink to='/' activeStyle>
-						Home
+						<a><img src={logo} width="30" height="40"></img></a>
 					</NavLink>
 					<NavLink to='/games' activeStyle>
 						Games

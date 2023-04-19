@@ -269,16 +269,18 @@ const One = (props) => {
             </div>
         </div>
     );
-
+//{inLobby ? <WithOppInfo/> : <NoOppInfo/>}
     return (
-        <div className='window'>
+        <div className='one-window'>
             <h1 className='title'>One</h1>
 
-            <div className='onegame'>
-                <div className='oneboard'>
+            <div className='one-menuandgame'>
+                <div className='one-playerlist'>
+                    list
+                </div>
+                <div className='one-menu'>
                     hello
                 </div>
-                {inLobby ? <WithOppInfo/> : <NoOppInfo/>}
             </div>
 
             <h2>Num Peers: {pcs.length}</h2>

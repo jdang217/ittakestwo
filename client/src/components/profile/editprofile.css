@@ -1,0 +1,217 @@
+.editprofile-window {
+    display: grid;
+    grid-template-columns: calc((100% - 450px) / 2) 450px calc((100% - 450px) / 2);
+    grid-template-rows: 20px 1050px 20px;
+    grid-template-areas: 
+    ". . ."
+    ". allinfo ."
+    ". . .";
+    background: rgb(47,82,166);
+    background: linear-gradient(180deg, rgba(47,82,166,1) 0%, rgba(119,77,203,1) 100%);
+}
+
+.editprofile-allinfo {
+    grid-area: allinfo;
+    border: 2px solid white;
+    border-radius: 15px;
+    font-family: 'Chakra Petch', sans-serif;
+    display: grid;
+    grid-template-columns: 10% 10% 10% 10% 10% 10% 10% 10% 10% 10%;
+    grid-template-rows:  8% 1% 6% 6% 6% 3% 3% 5% 5% 5% 5% 4% 10% 4% 10% 4% 10% 1% 3% 3%;
+    grid-template-areas: 
+    ". .title title title title title title . ."
+    ". hrline hrline hrline hrline hrline hrline hrline hrline ."
+    ". . . profileicon profileicon profileicon profileicon . . ."
+    ". . . profileicon profileicon profileicon profileicon . . ."
+    ". . . profileicon profileicon profileicon profileicon . . ."
+    ". . . . changeicon changeicon . . . ."
+    ". . . . . . . . . ."
+    ". userlabel . . . user user user user ."
+    ". passlabel . . . pass pass pass pass ."
+    ". emaillabel . . . email email email email ."
+    ". taglabel . . . tag tag tag tag ."
+    ". statuslabel statuslabel statuslabel . . . . . ."
+    ". status status status status status status status status ."
+    ". achievelabel achievelabel achievelabel . . . . . ."
+    ". achieve achieve achieve achieve achieve achieve achieve achieve ."
+    ". statslabel statslabel statslabel . . . . . ."
+    ". stats stats stats stats stats stats stats stats ."
+    ". . . . . . . . . ."
+    ". . back back . . submit submit . ."
+    ". . . . . . . . . .";
+}
+
+.editprofile-title {
+    grid-area: title;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.editprofile-line {
+    grid-area: hrline;
+    border-top: 1px solid white;
+}
+
+.editprofile-icon {
+    grid-area: profileicon;
+    justify-self: center;
+    align-self: center;
+    border: 2px solid white;
+}
+
+.editprofile-changeicon {
+    grid-area: changeicon;
+    text-align: center;
+    color: #8CCCFF;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.editprofile-userlabel {
+    grid-area: userlabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+}
+
+.editprofile-passlabel {
+    grid-area: passlabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+}
+
+.editprofile-emaillabel {
+    grid-area: emaillabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+}
+
+.editprofile-taglabel {
+    grid-area: taglabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+}
+
+.editprofile-statuslabel {
+    grid-area: statuslabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+    white-space: nowrap;
+}
+
+.editprofile-achievementslabel {
+    grid-area: achievelabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+    white-space: nowrap;
+}
+
+.editprofile-statslabel {
+    grid-area: statslabel;
+    color: white;
+    font-size: 20px;
+    align-items: center;
+    display: flex;
+    white-space: nowrap;
+}
+
+.editprofile-user {
+    grid-area: user;
+    color: white;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    text-align: right;
+}
+
+.editprofile-pass {
+    grid-area: pass;
+    color: white;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    text-align: right;
+}
+
+.editprofile-email {
+    grid-area: email;
+    color: white;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    text-align: right;
+}
+
+.editprofile-tag {
+    grid-area: tag;
+    color: white;
+    font-size: 20px;
+    background: transparent;
+    border: none;
+    text-align: right;
+}
+
+.editprofile-status {
+    grid-area: status;
+    color: white;
+    font-size: 20px;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+    resize: none;
+}
+
+.editprofile-achievements {
+    grid-area: achieve;
+    color: white;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.editprofile-stats {
+    grid-area: stats;
+    color: white;
+    background: transparent;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+
+.editprofile-submit {
+    grid-area: submit;
+}
+
+.editprofile-back {
+    grid-area: back;
+}
+
+.editprofile-modalbuttons {
+    display: grid;
+    grid-template-columns: 20% 25% 10% 25% 20%;
+    grid-template-rows: max-content;
+    grid-template-areas: 
+    ". finalback . finalsubmit .";
+}
+
+.editprofile-finalback {
+    grid-area: finalback;
+}
+
+.editprofile-finalsubmit {
+    grid-area: finalsubmit;
+}
